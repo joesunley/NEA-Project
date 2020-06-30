@@ -33,6 +33,10 @@ public class Group
 
 public class Race
 {
+
+    protected List<Player> Players = new List<Player>();
+    protected string title;
+
     public Race()
     {
 
@@ -45,10 +49,15 @@ public class SpRace : Race
     {
 
     }
+
 }
 
 public class MpRace : Race
 {
+
+    protected Host host;
+    protected string ipAddress;
+
     public MpRace() : base(Race)
     {
 
@@ -57,6 +66,9 @@ public class MpRace : Race
 
 public class CpRace : Race
 {
+
+    protected string CompID;
+
     public CpRace() : base(Race)
     {
 
@@ -65,6 +77,10 @@ public class CpRace : Race
 
 public class Player
 {
+
+    protected string name;
+    protected string username;
+
     public Player()
     {
 
