@@ -25,6 +25,9 @@ public class Round
 
 public class Group
 {
+
+    protected List<Race> Races = new List<Race>();
+
     public Group()
     {
 
