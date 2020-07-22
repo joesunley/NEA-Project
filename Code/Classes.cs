@@ -122,7 +122,6 @@ public class CpRace : IRace
 
 public class Player
 {
-    
     protected string name;
     protected string email;
     protected string club;
@@ -150,6 +149,57 @@ public class Player
         this.email = e;
         this.club = cl;
         this.username = u;
+    }
+
+    /// <summary>
+    /// Public property for the Player.name
+    /// </summary>
+    public string Name
+    {
+        get { return this.name; }
+
+        set {
+            if (CheckName(value)) { this.name = value; } //CheckName doesn't do anything atm - will check for: >0, 2 words, only letters
+        }
+    }
+
+    private bool CheckName() { }
+    /// <summary>
+    /// Public property for Player.email
+    /// </summary>
+    public string Email
+    {
+        get { return this.email; }
+
+        set {
+            if (CheckEmail(value)) { this.email = value; } //CheckEmail doesn'tdo anything atm - will check for: ??? @ ??? . ???
+        }
+    }
+
+    private bool CheckEmail(string email) { }
+
+    /// <summary>
+    /// Public property for Player.club
+    /// </summary>
+    public string Club
+    {
+        get { return this.club; }
+
+        set {
+            if (value.Length != 0) { this.club = Club; } //Checks length is at least 1
+        }
+    }
+
+    /// <summary>
+    /// Public property for Player.username - No Set Value (yet)
+    /// </summary>
+    public string Username
+    {
+        get { return this.username; }
+
+        set {
+            //Check the CF website for current players in ranking. Must be in ranking to allow
+        }
     }
 }
 
@@ -189,7 +239,10 @@ public class Host : Player
     /// <param name="ip">The Host's IP Address</param>
     public Host(Player player, string ip)
     {
-        // ADD Player Details (properties)
+        this.name = player.Name;
+        this.email = player.Email;
+        this.club = player.Club;
+        this.username = player.Username;
 
         this.iPAddress = ip;
 
