@@ -57,10 +57,26 @@ public class SpRace : Race
 
 public class MpRace : Race
 {
+<<<<<<< Updated upstream
 
     protected Host host;
     protected string ipAddress;
 
+=======
+<<<<<<< Updated upstream
+=======
+
+    protected Host host;
+    protected string ipAddress;
+    protected string raceName;
+    protected string startInterval;
+    protected string weather;
+    protected bool NightMode;
+
+    protected ResultsFile resultsFile;
+
+>>>>>>> Stashed changes
+>>>>>>> Stashed changes
     public MpRace() : base(Race)
     {
 
@@ -101,6 +117,14 @@ public class Host : Player
 public class Map
 {
     public Map()
+    {
+
+    }
+}
+
+public class ResultsFile
+{
+    public ResultsFile()
     {
 
     }
