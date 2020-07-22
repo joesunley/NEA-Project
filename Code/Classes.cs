@@ -34,37 +34,32 @@ public class Group
     }
 }
 
-public class Race
+public interface IRace
 {
 
     protected List<Player> Players = new List<Player>();
     protected string title;
 
-    public Race()
-    {
-
-    }
+    
 }
 
-public class SpRace : Race
+public class SpRace : IRace
 {
-    public SpRace() : base(Race)
+    public SpRace()
     {
 
     }
 
 }
 
-public class MpRace : Race
+public class MpRace : IRace
 {
-<<<<<<< Updated upstream
+
 
     protected Host host;
     protected string ipAddress;
 
-=======
-<<<<<<< Updated upstream
-=======
+
 
     protected Host host;
     protected string ipAddress;
@@ -74,21 +69,21 @@ public class MpRace : Race
     protected bool NightMode;
 
     protected ResultsFile resultsFile;
+    protected Map map;
 
->>>>>>> Stashed changes
->>>>>>> Stashed changes
-    public MpRace() : base(Race)
+
+    public MpRace()
     {
 
     }
 }
 
-public class CpRace : Race
+public class CpRace : IRace
 {
 
     protected string CompID;
 
-    public CpRace() : base(Race)
+    public CpRace()
     {
 
     }
@@ -96,8 +91,11 @@ public class CpRace : Race
 
 public class Player
 {
-
+    protected int iD;
     protected string name;
+    protected string email;
+    protected string club;
+    protected string cfUsername;
     protected string username;
 
     public Player()
@@ -108,6 +106,8 @@ public class Player
 
 public class Host : Player
 {
+    protected string iPAddress;
+
     public Host() : base(Player)
     {
 
@@ -124,6 +124,9 @@ public class Map
 
 public class ResultsFile
 {
+
+    protected string[,] results; //position, personID
+
     public ResultsFile()
     {
 
