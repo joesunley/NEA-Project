@@ -1,0 +1,12 @@
+D:\Projects\Login Visual\obj\Debug\Login_Visual.Properties.Resources.resources
+D:\Projects\Login Visual\obj\Debug\Login Visual.csproj.GenerateResource.cache
+D:\Projects\Login Visual\obj\Debug\Login Visual.csproj.CoreCompileInputs.cache
+D:\Projects\Login Visual\bin\Debug\Login Visual.exe.config
+D:\Projects\Login Visual\bin\Debug\Login Visual.exe
+D:\Projects\Login Visual\bin\Debug\Login Visual.pdb
+D:\Projects\Login Visual\obj\Debug\Login Visual.exe
+D:\Projects\Login Visual\obj\Debug\Login Visual.pdb
+D:\Projects\Login Visual\obj\Debug\Login_Visual.FrmLoginMain.resources
+D:\Projects\Login Visual\obj\Debug\Login_Visual.FrmLoginLogin.resources
+D:\Projects\Login Visual\obj\Debug\Login_Visual.FrmLoginRegister.resources
+D:\Projects\Login Visual\obj\Debug\Login Visual.csprojAssemblyReference.cache
