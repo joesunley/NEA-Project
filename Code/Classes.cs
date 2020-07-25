@@ -159,11 +159,30 @@ public class Player
         get { return this.name; }
 
         set {
-            if (CheckName(value)) { this.name = value; } //CheckName doesn't do anything atm - will check for: >0, 2 words, only letters
+            if (CheckName(value)) { this.name = value; }
         }
     }
 
-    private bool CheckName() { }
+    /// <summary>
+    /// Checks an inputted string to ensure that it is: > 1 characters, Contains at least 2 words, and only contains letters, space and hyphens
+    /// Returns true if acceptable, false if not
+    /// </summary>
+    /// <param name="name">The name to be checked</param>
+    /// <returns></returns>
+    private bool CheckName(string name)
+    {
+        if (name.Length < 2) { return false; }
+
+        string acceptedChars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz- ";
+
+        string[] split;
+
+        try { split = name.Split(' '); if (split.Length >= 2) { } else { return false; } } catch { return false; }
+
+        for (int i = 0; i < name.Length; i += 1) { if (acceptedChars.Contains(name[i])) { } else { return false; } }
+
+        return true;
+    }
     /// <summary>
     /// Public property for Player.email
     /// </summary>
