@@ -26,7 +26,7 @@ public class Round
 public class Group
 {
 
-    protected List<Race> Races = new List<Race>();
+    protected List<IRace> Races = new List<IRace>();
 
     public Group()
     {
@@ -113,12 +113,11 @@ public class CpRace : IRace
 
     }
 
-    /// <summary>
-    /// Constructor Function for a Competition Race
-    /// </summary>
+    /// <summary>Constructor Function for a Competition Race</summary>
     /// <param name="cID">The Catching Features Competition ID for this Race (Can be found on the CF Website</param>
     public CpRace(string cID) { this.CompID = cID; }
 }
+
 
 public class Player
 {
@@ -136,9 +135,7 @@ public class Player
 
     }
 
-    /// <summary>
-    /// Constructor Function for a Player
-    /// </summary>
+    /// <summary>Constructor Function for a Player</summary>
     /// <param name="n">The Players name</param>
     /// <param name="e">The Players Email Address</param>
     /// <param name="cl">The Players Club</param>
@@ -183,6 +180,7 @@ public class Player
 
         return true;
     }
+
     /// <summary>
     /// Public property for Player.email
     /// </summary>
@@ -234,9 +232,7 @@ public class Host : Player
         
     }
 
-    /// <summary>
-    /// Constructor Function for a Host
-    /// </summary>
+    /// <summary>Constructor Function for a Host</summary>
     /// <param name="n">The Players name</param>
     /// <param name="e">The Players Email Address</param>
     /// <param name="cl">The Players Club</param>
@@ -251,9 +247,7 @@ public class Host : Player
         this.iPAddress = ip;
     }
 
-    /// <summary>
-    /// Constructor Function for a Host that uses a already existing Person
-    /// </summary>
+    /// <summary>Constructor Function for a Host that uses a already existing Person</summary>
     /// <param name="player">A Player that has previously been created</param>
     /// <param name="ip">The Host's IP Address</param>
     public Host(Player player, string ip)
