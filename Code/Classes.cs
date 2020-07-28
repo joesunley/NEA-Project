@@ -320,7 +320,7 @@ public class Player
 
 public class Host : Player
 {
-    protected string iPAddress;
+    protected IPAddress iPAddress;
 
     /// <summary>
     /// Blank Constructor Function for a Host
@@ -359,6 +359,13 @@ public class Host : Player
 
     }
 
+    public string IpAddress
+    {
+        get { return this.iPAddress.ToString; }
+
+        set { try { this.iPAddress = IPAddress.Parse(value); } catch { } }
+    }
+
     public string[] GetStringArr()
     {
         List<string> lStr = new List<string>();
@@ -367,10 +374,10 @@ public class Host : Player
         lStr.Add(this.username);
         lStr.Add(this.email);
         lStr.Add(this.club);
+        lStr.Add(this.iPAddress.ToString());
 
         return lStr.ToArray();
     }
-
     public bool CheckHost(Host host)
     {
         bool accepted;
@@ -378,7 +385,7 @@ public class Host : Player
 
 
         return accepted;
-    }
+    } // To be completed
 }
 
 public class Map
