@@ -202,7 +202,7 @@ public class MpRace : IRace
 public class CpRace : IRace
 {
 
-    protected string CompID;
+    protected string compID;
 
     /// <summary>
     /// Blank Constructor Function for a Competition Race
@@ -215,6 +215,21 @@ public class CpRace : IRace
     /// <summary>Constructor Function for a Competition Race</summary>
     /// <param name="cID">The Catching Features Competition ID for this Race (Can be found on the CF Website</param>
     public CpRace(string cID) { this.CompID = cID; }
+
+    public string CompID
+    {
+        get { return this.compID; }
+
+        set { if (CheckCompID(value)) { this.compID = value; } }
+    }
+
+    private bool CheckCompID(string value)
+    {
+        // Will Check the Catching Features servers for current competitions
+        // Must be in the list to be accepted
+
+        return true;
+    }
 }
 
 public class Player
