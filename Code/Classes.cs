@@ -11,6 +11,10 @@ using System.Threading.Tasks;
 
 public class Competition
 {
+    protected List<Round> rounds = new List<Round>();
+    protected string compName;
+
+
     public Competition()
     {
 
@@ -19,6 +23,12 @@ public class Competition
 
 public class Round
 {
+    protected List<Group> groups = new List<Group>();
+    protected List<IRace> races = new List<IRace>();
+
+    protected List<Player> startingCompetitors = new List<Player>();
+    protected List<Player> qualifiedCompetitors = new List<Player>();
+
     public Round()
     {
 
@@ -27,9 +37,9 @@ public class Round
 
 public class Group
 {
-
-    protected List<IRace> Races = new List<IRace>();
-
+    protected List<Player> competitors = new List<Player>();
+    protected List<IRace> races = new List<IRace>(); // Inherited from the Round
+    
     public Group()
     {
 
@@ -42,7 +52,7 @@ public interface IRace
     protected List<Player> Players = new List<Player>();
     protected string title;
 
-    
+
 }
 
 public class SpRace : IRace
@@ -123,7 +133,8 @@ public class MpRace : IRace
             {
                 this.host = value;
                 this.ipAddress = ""; // IpAddress Property in Host Class
-            } else
+            }
+            else
             {
                 // Return Error
             }
@@ -238,7 +249,7 @@ public class Player
     protected string email;
     protected string club;
     protected string username;
-    
+
 
     /// <summary>
     /// Blank Constructor Function for a Player
@@ -268,7 +279,8 @@ public class Player
     {
         get { return this.name; }
 
-        set {
+        set
+        {
             if (CheckName(value)) { this.name = value; }
         }
     }
@@ -287,7 +299,8 @@ public class Player
 
         string[] split;
 
-        try { split = name.Split(' '); if (split.Length >= 2) { } else { return false; } } catch { return false; }
+        try { split = name.Split(' '); if (split.Length >= 2) { } else { return false; } }
+        catch { return false; }
 
         for (int i = 0; i < name.Length; i += 1) { if (acceptedChars.Contains(name[i])) { } else { return false; } }
 
@@ -301,7 +314,8 @@ public class Player
     {
         get { return this.email; }
 
-        set {
+        set
+        {
             if (CheckEmail(value)) { this.email = value; } //CheckEmail doesn'tdo anything atm - will check for: ??? @ ??? . ???
         }
     }
@@ -315,7 +329,8 @@ public class Player
     {
         get { return this.club; }
 
-        set {
+        set
+        {
             if (value.Length != 0) { this.club = Club; } //Checks length is at least 1
         }
     }
@@ -327,7 +342,8 @@ public class Player
     {
         get { return this.username; }
 
-        set {
+        set
+        {
             //Check the CF website for current players in ranking. Must be in ranking to allow
         }
     }
@@ -342,7 +358,7 @@ public class Host : Player
     /// </summary>
     public Host()
     {
-        
+
     }
 
     /// <summary>Constructor Function for a Host</summary>
@@ -357,7 +373,7 @@ public class Host : Player
         this.email = e;
         this.club = cl;
         this.username = U;
-        this.iPAddress = ip;
+        this.iPAddress = IPAddress.Parse(ip);
     }
 
     /// <summary>Constructor Function for a Host that uses a already existing Person</summary>
@@ -370,13 +386,13 @@ public class Host : Player
         this.club = player.Club;
         this.username = player.Username;
 
-        this.iPAddress = ip;
+        this.iPAddress = IPAddress.Parse(ip); ;
 
     }
 
     public string IpAddress
     {
-        get { return this.iPAddress.ToString; }
+        get { return this.iPAddress.ToString(); }
 
         set { try { this.iPAddress = IPAddress.Parse(value); } catch { } }
     }
@@ -395,7 +411,7 @@ public class Host : Player
     }
     public bool CheckHost(Host host)
     {
-        bool accepted;
+        bool accepted = true;
 
 
 
