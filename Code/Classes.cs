@@ -21,6 +21,7 @@ public class Competition
     }
 }
 
+
 public class Round
 {
     protected List<Group> groups = new List<Group>();
@@ -29,10 +30,56 @@ public class Round
     protected List<Player> startingCompetitors = new List<Player>();
     protected List<Player> qualifiedCompetitors = new List<Player>();
 
+
+    /// <summary>
+    /// Blank Constructor Function for a Round
+    /// </summary>
     public Round()
     {
 
     }
+
+    /// <summary>
+    /// Constructor function for a Round : accepts an already created list of groups
+    /// </summary>
+    /// <param name="group">The groups that will be created</param>
+    /// <param name="race">The races that will be run by competitors</param>
+    /// <param name="competitors">The list of competitors taking part</param>
+    public Round(List<Group> group, List<IRace> race, List<Player> competitors)
+    {
+        this.groups = group;
+        this.races = race;
+        this.startingCompetitors = competitors;
+    }
+
+    /// <summary>
+    /// Constructor function for a round : Takes in a number of groups and creates that many blank groups
+    /// </summary>
+    /// <param name="groupCount">The number of groups to be created</param>
+    /// <param name="race">The races that will be run by competitors</param>
+    /// <param name="competitors">The list of competitors taking part</param>
+    public Round(int groupCount, List<IRace> race, List<Player> competitors)
+    {
+        for (int i = 0; i < groupCount; i += 1) { this.groups.Add(new Group()); }
+
+        this.races = race;
+        this.startingCompetitors = competitors;
+    }
+
+    private void CreateRandomGroups()
+    {
+        
+        int groupCount = this.groups.Count;
+        int playerCount = this.startingCompetitors.Count;
+
+        for (int i = 0; i < playerCount; i += 1)
+        {
+            for (int j = 0; j < groupCount; j += 1)
+            {
+
+            }
+        }
+    } // Not Finished : Need to think through the logic
 }
 
 public class Group
@@ -40,9 +87,20 @@ public class Group
     protected List<Player> competitors = new List<Player>();
     protected List<IRace> races = new List<IRace>(); // Inherited from the Round
     
-    public Group()
-    {
+    /// <summary>
+    /// Blank Constructor Function for a group
+    /// </summary>
+    public Group() { }
 
+    /// <summary>
+    /// Constructor Function for a group
+    /// </summary>
+    /// <param name="players">The players that are competiting in this group</param>
+    /// <param name="races">The races that are in the round</param>
+    public Group(List<Player> players, List<IRace> races)
+    {
+        this.competitors = players;
+        this.races = races;
     }
 }
 
@@ -85,10 +143,8 @@ public class MpRace : IRace
     /// <summary>
     /// Blank Constuctor Function for a MultiPlayer Race
     /// </summary>
-    public MpRace()
-    {
+    public MpRace() { }
 
-    }
     /// <summary>
     /// Contstructor Function for a MultiPlayer Race
     /// </summary>
@@ -125,14 +181,14 @@ public class MpRace : IRace
     /// </summary>
     public Host Host
     {
-        get { return host.GetStringArr(); }
+        get { return host; }
 
         set
         {
             if (Host.CheckHost(value))
             {
                 this.host = value;
-                this.ipAddress = ""; // IpAddress Property in Host Class
+                this.ipAddress = IPAddress.Parse(value.IpAddress);// IpAddress Property in Host Class
             }
             else
             {
@@ -204,7 +260,7 @@ public class MpRace : IRace
     /// </summary>
     public Map Map
     {
-        get { return this.map.GetStringArr(); }
+        get { return this.map; }
 
         set { if (Map.CheckMap(value)) { this.map = value; } else { } }
     }
@@ -214,26 +270,26 @@ public class CpRace : IRace
 {
 
     protected string compID;
+    protected ResultsFile results;
 
     /// <summary>
     /// Blank Constructor Function for a Competition Race
     /// </summary>
-    public CpRace()
-    {
-
-    }
+    public CpRace() { }
 
     /// <summary>Constructor Function for a Competition Race</summary>
     /// <param name="cID">The Catching Features Competition ID for this Race (Can be found on the CF Website</param>
     public CpRace(string cID) { this.CompID = cID; }
 
+    /// <summary>
+    /// The public property for this.compIdD : Will accept if it is a valid competition
+    /// </summary>
     public string CompID
     {
         get { return this.compID; }
 
         set { if (CheckCompID(value)) { this.compID = value; } }
     }
-
     private bool CheckCompID(string value)
     {
         // Will Check the Catching Features servers for current competitions
@@ -254,10 +310,7 @@ public class Player
     /// <summary>
     /// Blank Constructor Function for a Player
     /// </summary>
-    public Player()
-    {
-
-    }
+    public Player() { }
 
     /// <summary>Constructor Function for a Player</summary>
     /// <param name="n">The Players name</param>
@@ -356,10 +409,7 @@ public class Host : Player
     /// <summary>
     /// Blank Constructor Function for a Host
     /// </summary>
-    public Host()
-    {
-
-    }
+    public Host() { }
 
     /// <summary>Constructor Function for a Host</summary>
     /// <param name="n">The Players name</param>
