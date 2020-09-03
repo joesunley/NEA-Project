@@ -63,30 +63,51 @@ public class Round
         for (int i = 0; i < groupCount; i += 1) { this.groups.Add(new Group()); }
 
         this.races = race;
+
         this.startingCompetitors = competitors;
     }
 
     private void CreateRandomGroups()
     {
+
+        List<Player> competitors = this.startingCompetitors;
         
+
+        List<List<Player>> groupedPlayers = new List<List<Player>>();
+
         int groupCount = this.groups.Count;
         int playerCount = this.startingCompetitors.Count;
+
+        for (int i = 0; i < groupCount; i += 1)
+        {
+            
+            groupedPlayers.Add(new List<Player>());
+        }
 
         for (int i = 0; i < playerCount; i += 1)
         {
             for (int j = 0; j < groupCount; j += 1)
             {
+                try
+                {
+                    
+                    groupedPlayers[j].Add(this.startingCompetitors[i]);
+                    i += 1;
+                }
+                catch { } //Catches when finished
 
             }
         }
-    } // Not Finished : Need to think through the logic
+    }
+
+    
 }
 
 public class Group
 {
     protected List<Player> competitors = new List<Player>();
     protected List<IRace> races = new List<IRace>(); // Inherited from the Round
-    
+
     /// <summary>
     /// Blank Constructor Function for a group
     /// </summary>
