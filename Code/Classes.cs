@@ -21,7 +21,6 @@ public class Competition
     }
 }
 
-
 public class Round
 {
     protected List<Group> groups = new List<Group>();
@@ -70,8 +69,7 @@ public class Round
     private void CreateRandomGroups()
     {
 
-        List<Player> competitors = this.startingCompetitors;
-        
+        List<Player> competitors = Randomise(this.startingCompetitors);
 
         List<List<Player>> groupedPlayers = new List<List<Player>>();
 
@@ -80,7 +78,7 @@ public class Round
 
         for (int i = 0; i < groupCount; i += 1)
         {
-            
+
             groupedPlayers.Add(new List<Player>());
         }
 
@@ -90,7 +88,7 @@ public class Round
             {
                 try
                 {
-                    
+
                     groupedPlayers[j].Add(this.startingCompetitors[i]);
                     i += 1;
                 }
@@ -100,7 +98,26 @@ public class Round
         }
     }
 
-    
+    private List<Player> Randomise(List<Player> names)
+    {
+        List<Player> shuffled = new List<Player>();
+
+        Random rnd = new Random();
+        rnd.Next();
+
+        do
+        {
+            try
+            {
+                Player selected = names[rnd.Next(0, names.Count - 1)];
+                shuffled.Add(selected);
+                names.Remove(selected);
+            }
+            catch { }
+        } while (names.Count != 0);
+
+        return shuffled;
+    }
 }
 
 public class Group
