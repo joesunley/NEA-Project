@@ -62,7 +62,7 @@ public class Round
         for (int i = 0; i < groupCount; i += 1) { this.groups.Add(new Group()); }
 
         this.races = race;
-
+            
         this.startingCompetitors = competitors;
     }
 
@@ -147,7 +147,6 @@ public interface IRace
 
     protected List<Player> Players = new List<Player>();
     protected string title;
-
 
 }
 
@@ -509,6 +508,14 @@ public class Host : Player
 
 public class Map
 {
+
+    string hostFileLocation = "";
+
+    string mapName = "";
+    string mapMapper = "";
+    string mapDescription = "";
+
+
     public Map()
     {
 
@@ -517,8 +524,6 @@ public class Map
 
 
     public bool CheckMap(Map map) { }
-
-    public string[] GetStringArr() { }
 }
 
 public class ResultsFile
