@@ -319,7 +319,7 @@ public class CpRace : IRace
     public CpRace(string cID) { this.CompID = cID; }
 
     /// <summary>
-    /// The public property for this.compIdD : Will accept if it is a valid competition
+    /// The public property for this.compID : Will accept if it is a valid competition
     /// </summary>
     public string CompID
     {
