@@ -74,7 +74,7 @@ public class Round
         List<List<Player>> groupedPlayers = new List<List<Player>>();
 
         int groupCount = this.groups.Count;
-        int playerCount = this.startingCompetitors.Count;
+        int playerCount = competitors.Count;
 
         for (int i = 0; i < groupCount; i += 1)
         {
