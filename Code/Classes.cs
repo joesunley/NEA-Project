@@ -19,6 +19,15 @@ public class Competition
     {
 
     }
+
+    /// <summary>
+    /// Add blank rounds after creating the competition
+    /// </summary>
+    /// <param name="_count">The number of rounds to create</param>
+    public void AddRounds(int _count)
+    {
+        for (int i = 0; i < _count; i += 1) { rounds.Add(new Round()); }
+    }
 }
 
 public class Round
@@ -117,6 +126,15 @@ public class Round
         } while (names.Count != 0);
 
         return shuffled;
+    }
+
+    /// <summary>
+    /// Create blank Groups after the creation of the round
+    /// </summary>
+    /// <param name="_count">The number of Groups to be created</param>
+    public void AddGroups(int _count)
+    {
+        for (int i = 0; i < _count; i += 1) { groups.Add(new Group()); }
     }
 }
 
