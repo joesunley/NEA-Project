@@ -75,6 +75,9 @@ public class Round
         this.startingCompetitors = competitors;
     }
 
+    /// <summary>
+    /// Takes the list of competitors and shuffles that list and then splits it into the correct number of groups // Still need to add functionality for what happens once it has split the players
+    /// </summary>
     private void CreateRandomGroups()
     {
 
@@ -107,6 +110,11 @@ public class Round
         }
     }
 
+    /// <summary>
+    /// Takes an ordered list of players and shuffles the list so it is a random order
+    /// </summary>
+    /// <param name="names">The list of players</param>
+    /// <returns></returns>
     private List<Player> Randomise(List<Player> names)
     {
         List<Player> shuffled = new List<Player>();
