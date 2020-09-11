@@ -1,6 +1,11 @@
 # NEA Project
  
 ### Current System
+At the moment the only way to create and manage a multi stage catching features competition is through using a spreadsheet such as excel or google sheets. This method requires a lot of manual input or complicated formulae.
+
+If you want to use a custom map you then have to use another file sharing webservice such as dropbox or google drive. Which then adds another layer of complexity to the competition.
+
+There is also no automatic way of notifying a competitor if they have gotten through to the next round or not except via email or IM service, which again, adds another layer of complexity.
 
 
 ### Proposed System
