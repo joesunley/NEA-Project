@@ -26,8 +26,7 @@ public string GetHTML(string URL)
 
 #### Tests
 
-Only one test was used :
-    URL : `https://www.autohotkey.com/docs/KeyList.htm`
+Only one test was used : `https://www.autohotkey.com/docs/KeyList.htm`
 
 #### Screenshots
 
