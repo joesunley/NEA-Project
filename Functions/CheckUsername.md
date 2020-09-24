@@ -8,8 +8,33 @@ If the username is found to be active the program returns **True** else it will 
 
 This check will be used in the `Player` or `Host` classes.
 
+
+
 ### Code
 
+``` 
+Code goes here when done
+```
+
+The Code uses the [GetHTML](https://github.com/joesunley/NEA-Project/blob/master/Functions/GetHTML.md) Function, in order to get the contents of the ranking page.
+
+``` csharp
+using System.IO;
+using System.Net;
+
+public string GetHTML(string URL)
+{
+    StreamReader instream;
+    WebRequest webrequest;
+    WebResponse webresponse;
+
+    webrequest = WebRequest.Create(URL);
+    webresponse = webrequest.GetResponse();
+    instream = new StreamReader(webresponse.GetResponseStream());
+
+    return instream.ReadToEnd().ToString();
+}
+```
 ### Testing
 
 #### Tests
