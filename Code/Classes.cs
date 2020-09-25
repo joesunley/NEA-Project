@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 public class Competition
 {
-    protected List<Round> rounds = new List<Round>();
+    public List<Round> rounds = new List<Round>();
     protected string compName;
 
 
@@ -32,7 +32,7 @@ public class Competition
 
 public class Round
 {
-    protected List<Group> groups = new List<Group>();
+    public List<Group> groups = new List<Group>();
     protected List<IRace> races = new List<IRace>();
 
     protected List<Player> startingCompetitors = new List<Player>();
@@ -144,6 +144,34 @@ public class Round
     {
         for (int i = 0; i < _count; i += 1) { groups.Add(new Group()); }
     }
+
+    public void AddRaces(List<IRace> _races, bool replace)
+    {
+        if (replace)
+        {
+            races = _races;
+        }
+        else
+        {
+            races.AddRange(_races);
+        }
+    }
+
+    /// <summary>
+    /// The public property for the qualifiedCompetitors List
+    /// </summary>
+    public List<Player> QualifiedCompetitors
+    {
+        get
+        {
+            return this.qualifiedCompetitors;
+        }
+
+        set
+        {
+
+        }
+    }
 }
 
 public class Group
@@ -179,8 +207,12 @@ public interface IRace
 public class SpRace : IRace
 {
 
-    protected ResultsFile resultsFile;
-    protected Map map;
+    protected ResultsFile resultsFile;  // Auto Generated
+    protected Map map;                  // Required
+
+    protected string raceName;          // Optional
+    protected string weather;           // Optional
+    protected bool nightMode;           // optional
 
     public SpRace()
     {
@@ -193,15 +225,15 @@ public class MpRace : IRace
 {
 
 
-    protected Host host;
-    protected IPAddress ipAddress;
-    protected string raceName;
-    protected string startInterval;
-    protected string weather;
-    protected bool nightMode;
+    protected Host host;                // Required (Auto Generated)
+    protected IPAddress ipAddress;      // Required
+    protected string raceName;          // Optional
+    protected string startInterval;     // Optional
+    protected string weather;           // Optional
+    protected bool nightMode;           // Optional
 
-    protected ResultsFile resultsFile;
-    protected Map map;
+    protected ResultsFile resultsFile;  // Auto Generated
+    protected Map map;                  // Required
 
     /// <summary>
     /// Blank Constuctor Function for a MultiPlayer Race
@@ -217,7 +249,7 @@ public class MpRace : IRace
     /// <param name="sI">The start interval: Mass Start, 15, 30, 45, 60, 120</param>
     /// <param name="wT">The weather during the race: Sunny, Raining, Snowing</param>
     /// <param name="night">Whether the race is at night or not</param>
-    /// <param name="m">The Map for the race</param>
+    /// <param name="m">The map for the race</param>
     public MpRace(Host h, string ip, string rN, string sI, string wT, bool night, Map m)
     {
         this.host = h;
@@ -226,6 +258,17 @@ public class MpRace : IRace
         this.startInterval = sI;
         this.weather = wT;
         this.nightMode = night;
+        this.map = m;
+    }
+
+    /// <summary>
+    /// Constructor Function for a MultiPlayer Race
+    /// </summary>
+    /// <param name="ip">The Host's ip Address</param>
+    /// <param name="m">The map for the race</param>
+    public MpRace(string ip, Map m)
+    {
+        this.ipAddress = IPAddress.Parse(ip);
         this.map = m;
     }
 
@@ -279,11 +322,16 @@ public class MpRace : IRace
 
         set { if (CheckStartInterval(value)) { this.startInterval = value; } else { } }
     }
+    /// <summary>
+    /// Checks that the supplied start interval is valid
+    /// </summary>
+    /// <param name="sI">the start interval to check</param>
+    /// <returns></returns>
     private bool CheckStartInterval(string sI)
     {
         //Mass Start, 15, 30, 45, 60, 120
 
-        if (sI == "MS") { return true; }
+        if (sI.ToUpper() == "MS") { return true; }
         else if (sI == "30") { return true; }
         else if (sI == "45") { return true; }
         else if (sI == "60") { return true; }
@@ -298,8 +346,13 @@ public class MpRace : IRace
     {
         get { return this.weather; }
 
-        set { if (CheckWeather(value)) { this.weather = value; } else { } }
+        set { if (CheckWeather(value)) { this.weather = value.ToUpper(); } else { } }
     }
+    /// <summary>
+    /// Checks that the weather inputted is an acceptable cf weather
+    /// </summary>
+    /// <param name="weather"></param>
+    /// <returns></returns>
     private bool CheckWeather(string weather)
     {
         if (weather.ToUpper() == "SUNNY") { return true; }
@@ -332,8 +385,8 @@ public class MpRace : IRace
 public class CpRace : IRace
 {
 
-    protected string compID;
-    protected ResultsFile results;
+    protected string compID;        // Required
+    protected ResultsFile results;  // Auto Generated
 
     /// <summary>
     /// Blank Constructor Function for a Competition Race
@@ -571,11 +624,11 @@ public class Host : Player
 public class Map
 {
 
-    string hostFileLocation = "";
+    string hostFileLocation = ""; // Required
 
-    string mapName = "";
-    string mapMapper = "";
-    string mapDescription = "";
+    string mapName = "";        // Optional
+    string mapMapper = "";      // Optional
+    string mapDescription = ""; // Optional
 
 
     public Map()
@@ -583,9 +636,22 @@ public class Map
 
     }
 
+    public Map(string loc)
+    {
+        this.hostFileLocation = loc;
+    }
 
+    public Map(string loc, string mN, string mM, string mD) {
+        this.mapName = mN;
+        this.mapMapper = mM;
+        this.mapDescription = mD;
 
-    public bool CheckMap(Map map) { }
+        this.hostFileLocation = loc;
+    }
+
+    public bool CheckMap(Map map) { return true; }
+
+    public void PrepareForSending() { }
 }
 
 public class ResultsFile
