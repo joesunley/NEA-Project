@@ -22,6 +22,8 @@ public string GetHTML(string URL)
     return instream.ReadToEnd().ToString();
 }
 ```
+
+The code was sourced from: [Vb.net-Informations](http://vb.net-informations.com/communications/vb.net_read_url.htm). And was modified & converted to c# by me.
 ### Testing
 
 #### Tests
