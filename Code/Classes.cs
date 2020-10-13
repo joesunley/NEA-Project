@@ -20,6 +20,19 @@ public class Competition
 
     }
 
+    public string Name
+    {
+        get
+        {
+            return this.compName;
+        }
+
+        set
+        {
+            this.compName = value;
+        }
+    }
+
     /// <summary>
     /// Add blank rounds after creating the competition
     /// </summary>
@@ -145,6 +158,11 @@ public class Round
         for (int i = 0; i < _count; i += 1) { groups.Add(new Group()); }
     }
 
+    /// <summary>
+    /// Add Races to the current round
+    /// </summary>
+    /// <param name="_races">The list of races to add</param>
+    /// <param name="replace">Whether or not the races are replacing the current ones or being added to the end</param>
     public void AddRaces(List<IRace> _races, bool replace)
     {
         if (replace)
@@ -172,12 +190,24 @@ public class Round
 
         }
     }
+
+    /// <summary>
+    /// Updates the Races within the groups
+    /// </summary>
+    public void UpdateGroupRaces()
+    {
+        for (int i = 0; i < groups.Count; i++)
+        {
+            groups[i].races.Clear();
+            groups[i].races.AddRange(this.races);
+        }
+    }
 }
 
 public class Group
 {
     protected List<Player> competitors = new List<Player>();
-    protected List<IRace> races = new List<IRace>(); // Inherited from the Round
+    public List<IRace> races = new List<IRace>(); // Inherited from the Round
 
     /// <summary>
     /// Blank Constructor Function for a group
@@ -199,16 +229,29 @@ public class Group
 public interface IRace
 {
 
-    protected List<Player> Players = new List<Player>();
-    protected string title;
+    //protected List<Player> Players = new List<Player>();
+    //protected string raceTitle;
+
+    //public string Title
+    //{
+    //    get
+    //    {
+    //        return this.raceTitle;
+    //    }
+
+    //    set
+    //    {
+    //        this.raceTitle = value;
+    //    }
+    //}
 
 }
 
 public class SpRace : IRace
 {
 
-    protected ResultsFile resultsFile;  // Auto Generated
-    protected Map map;                  // Required
+    protected ResultsFile resultsFile = new ResultsFile();  // Auto Generated
+    protected Map map = new Map();                  // Required
 
     protected string raceName;          // Optional
     protected string weather;           // Optional
@@ -217,6 +260,22 @@ public class SpRace : IRace
     public SpRace()
     {
 
+    }
+
+    public SpRace(string _rN, string _w, bool _nM)
+    {
+        this.raceName = _rN;
+        this.weather = _w;
+        this.nightMode = _nM;
+    }
+
+    public SpRace(string _rN, string _w, bool _nM, string _mL)
+    {
+        this.raceName = _rN;
+        this.weather = _w;
+        this.nightMode = _nM;
+
+        this.map.AddMapLocation(_mL);
     }
 
 }
@@ -260,6 +319,17 @@ public class MpRace : IRace
         this.nightMode = night;
         this.map = m;
     }
+
+    public MpRace(string ip, string rN, string sI, string wT, bool night, string mL)
+    {
+        this.ipAddress = IPAddress.Parse(ip);
+        this.raceName = rN;
+        this.startInterval = sI;
+        this.weather = wT;
+        this.nightMode = night;
+        this.map.AddMapLocation(mL);
+    }
+
 
     /// <summary>
     /// Constructor Function for a MultiPlayer Race
@@ -641,7 +711,8 @@ public class Map
         this.hostFileLocation = loc;
     }
 
-    public Map(string loc, string mN, string mM, string mD) {
+    public Map(string loc, string mN, string mM, string mD)
+    {
         this.mapName = mN;
         this.mapMapper = mM;
         this.mapDescription = mD;
@@ -652,6 +723,11 @@ public class Map
     public bool CheckMap(Map map) { return true; }
 
     public void PrepareForSending() { }
+
+    public void AddMapLocation(string _mapLoc)
+    {
+        this.hostFileLocation = _mapLoc;
+    }
 }
 
 public class ResultsFile
