@@ -14,7 +14,6 @@ Race,Id,Type,name,weather,nightMode,mapLoc,ip,sI,compId
 
 And some sample data that will be used for testing is:
 ```
-Competiton, MyComp, 3
 Competition,MyComp,3
 Round,0,4,3,{0 1 2}
 Round,1,2,2,{4 5}
