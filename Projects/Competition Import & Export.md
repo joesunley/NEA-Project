@@ -44,18 +44,23 @@ namespace Competition_Import___Export
     {
         static void Main(string[] args)
         {
+            CreateImport("TestFile.txt");
         }
 
-        static string CreateExport(Competition comp)
+        static string[] CreateExport(Competition comp)
         {
-
+            return new string[2];
         }
 
-        static Competition CreateImport(string mapLoc)
+        static Competition CreateImport(string fileLoc)
         {
             Competition comp = new Competition();
 
-            string[] import = File.ReadAllLines(mapLoc);
+            string[] import = File.ReadAllLines(fileLoc);
+
+            List<IRace> races = new List<IRace>();
+            List<string> racesStr = new List<string>();
+            List<string> rounds = new List<string>();
 
             for (int i = 0; i < import.Length; i++)
             {
@@ -72,6 +77,8 @@ namespace Competition_Import___Export
                 {
                     Round round = CreateRound(line);
                     comp.rounds[Convert.ToInt16(line[1])] = round;
+
+                    rounds.Add(import[i]);
                 }
                 else if (line[0] == "Group")
                 {
@@ -80,10 +87,21 @@ namespace Competition_Import___Export
                 else if (line[0] == "Race")
                 {
                     IRace race = CreateRace(line);
-
+                    races.Add(race);
+                    racesStr.Add(line[0]);
                 }
             }
-            
+
+            for (int i = 0; i < comp.rounds.Count; i++)
+            {
+
+                string[] line = rounds[i].Split(',');
+                string raceIds = line[4];
+
+                comp.rounds[i].AddRaces(GetRacesforRound(raceIds, races), false);
+                comp.rounds[i].UpdateGroupRaces();
+            }
+
             return comp;
         }
 
@@ -110,13 +128,13 @@ namespace Competition_Import___Export
         {
             if (line[2] == "Sp")
             {
-                SpRace race = new SpRace(line[3], line[4], Convert.ToBoolean(line[5]), line[6]);
+                SpRace race = new SpRace(line[3], line[4], YNtoBoolean(line[5]), line[6]);
 
                 return race;
             }
             else if (line[2] == "Mp")
             {
-                MpRace race = new MpRace(line[7], line[3], line[8], line[4], Convert.ToBoolean(line[5]), line[6]);
+                MpRace race = new MpRace(line[7], line[3], line[8], line[4], YNtoBoolean(line[5]), line[6]);
 
                 return race;
             }
@@ -127,6 +145,29 @@ namespace Competition_Import___Export
                 return race;
             }
             else { return new SpRace(); } //Just to remove the error - cannot end up with this
+        }
+
+        static List<IRace> GetRacesforRound(string raceIds, List<IRace> allRaces)
+        {
+            raceIds = raceIds.Substring(1);
+            raceIds = raceIds.Substring(0, raceIds.Length - 1);
+
+            string[] iDs = raceIds.Split(' ');
+
+            List<IRace> races = new List<IRace>();
+
+            for (int i = 0; i < iDs.Length; i++)
+            {
+                races.Add(allRaces[Convert.ToInt16(iDs[i])]);
+            }
+
+            return races;
+
+        }
+
+        static bool YNtoBoolean(string input)
+        {
+            if (input.ToUpper() == "YES") { return true; } else { return false; }
         }
     }
 }
