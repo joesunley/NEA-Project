@@ -41,6 +41,18 @@ public class Competition
     {
         for (int i = 0; i < _count; i += 1) { rounds.Add(new Round()); }
     }
+
+    public List<IRace> GetRaces()
+    {
+        List<IRace> races = new List<IRace>();
+
+        for (int i = 0; i < rounds.Count; i++)
+        {
+            races.AddRange(rounds[i].GetRaces());
+        }
+
+        return races;
+    }
 }
 
 public class Round
@@ -202,6 +214,14 @@ public class Round
             groups[i].races.AddRange(this.races);
         }
     }
+
+    /// <summary>
+    /// Gets the number of Races in the round
+    /// </summary>
+    /// <returns></returns>
+    public int RaceCount() { return races.Count; }
+
+    public List<IRace> GetRaces() { return races; }
 }
 
 public class Group
@@ -226,26 +246,7 @@ public class Group
     }
 }
 
-public interface IRace
-{
-
-    //protected List<Player> Players = new List<Player>();
-    //protected string raceTitle;
-
-    //public string Title
-    //{
-    //    get
-    //    {
-    //        return this.raceTitle;
-    //    }
-
-    //    set
-    //    {
-    //        this.raceTitle = value;
-    //    }
-    //}
-
-}
+public interface IRace { }
 
 public class SpRace : IRace
 {
@@ -291,8 +292,8 @@ public class MpRace : IRace
     protected string weather;           // Optional
     protected bool nightMode;           // Optional
 
-    protected ResultsFile resultsFile;  // Auto Generated
-    protected Map map;                  // Required
+    protected ResultsFile resultsFile = new ResultsFile();  // Auto Generated
+    protected Map map = new Map();                          // Required
 
     /// <summary>
     /// Blank Constuctor Function for a MultiPlayer Race
