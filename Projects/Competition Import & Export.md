@@ -44,19 +44,61 @@ namespace Competition_Import___Export
     {
         static void Main(string[] args)
         {
-            CreateImport("TestFile.txt");
+            Competition comp = CreateImport(File.ReadAllLines("TestFile.txt"));
+
+            CreateExport(comp);
         }
+
+        #region ExportProcedures
 
         static string[] CreateExport(Competition comp)
         {
+
+            List<string> outputList = new List<string>();
+
+            string compLine = ("Competition," + (comp.Name) + "," + (comp.rounds.Count));
+
+            outputList.Add(compLine);
+
+            List<IRace> allRaces = comp.GetRaces();
+
+            Dictionary<int, IRace> raceDict = new Dictionary<int, IRace>();
+
+            for (int i = 0; i < allRaces.Count; i++) { raceDict.Add(i, allRaces[i]); }
+
+
+
+
             return new string[2];
         }
 
-        static Competition CreateImport(string fileLoc)
+        static string ConvertRace(int iD, IRace race)
+        {
+            string line = ("Race," + iD + ",");
+
+            if (race is SpRace)
+            {
+
+            }
+            else if (race is MpRace)
+            {
+
+            }
+            else if (race is CpRace)
+            {
+
+            }
+            else { }
+            return line;
+        }
+
+
+        #endregion
+
+        #region Import Procedures
+        static Competition CreateImport(string[] import)
         {
             Competition comp = new Competition();
-
-            string[] import = File.ReadAllLines(fileLoc);
 
             List<IRace> races = new List<IRace>();
             List<string> racesStr = new List<string>();
@@ -169,6 +211,8 @@ namespace Competition_Import___Export
         {
             if (input.ToUpper() == "YES") { return true; } else { return false; }
         }
+
+        #endregion
     }
 }
 
