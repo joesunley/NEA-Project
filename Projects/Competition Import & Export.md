@@ -5,6 +5,27 @@
 The first part of this project takes a Competition class and exports it to a text? file
 The second part takes in a text? file and converts it to a Competition class
 
+The structure for the text file is:
+```
+Competition, name, numRounds
+Round, ID, numGroups, numRaces, {Races(Id)}
+Race, Id, Type, name, weather, nightMode, mapLoc, ip, sI, compId
+```
+
+And some sample data that will be used for testing is:
+```
+Competiton, MyComp, 3
+Round, 0, 4, 3, {0 1 2}
+Round, 1, 2, 2, {4, 5}
+Round, 2, 1, 1, {3}
+Race, 0, Sp, Dumyat, Sunny, No, somefile, na, na, na
+Race, 1, Cp, Stirling, Sunny, no, somefile, na, na, 1536
+Race, 2
+Race, 3, Mp, Circuit Board, Rainy, yes, somefile, 128.0.12.3, MS, na
+Race, 4
+Race, 5
+```
+
 ### Code
 
 ``` c sharp
