@@ -60,11 +60,7 @@ namespace Competition_Import___Export
 
             outputList.Add(compLine);
 
-            List<IRace> allRaces = comp.GetRaces();
-
-            Dictionary<int, IRace> raceDict = new Dictionary<int, IRace>();
-
-            for (int i = 0; i < allRaces.Count; i++) { raceDict.Add(i, allRaces[i]); }
+            
 
 
 
@@ -72,26 +68,58 @@ namespace Competition_Import___Export
             return new string[2];
         }
 
-        static string ConvertRace(int iD, IRace race)
+        static void ConvertRace(Competition comp)
         {
-            string line = ("Race," + iD + ",");
+            List<IRace> allRaces = comp.GetRaces();
 
-            if (race is SpRace)
+            Dictionary<int, IRace> raceDict = new Dictionary<int, IRace>();
+
+            for (int i = 0; i < allRaces.Count; i++) { raceDict.Add(i, allRaces[i]); }
+
+            for (int i = 0; i < allRaces.Count; i++)
             {
 
-            }
-            else if (race is MpRace)
-            {
+                string line = "";
 
-            }
-            else if (race is CpRace)
-            {
+                if (raceDict[i] is SpRace)
+                {
+                    SpRace race = (SpRace)raceDict[i];
 
+                    line = ("Race," + i + ",Sp," + (race.Name) + "," 
+                        + race.Weather + "," 
+                        + (BooltoYN(race.NightMode)) + "," 
+                        + (race.Map.MapLocation) 
+                        + ",na,na,na");
+                }
+                else if (raceDict[i] is MpRace)
+                {
+                    MpRace race = (MpRace)raceDict[i];
+
+                    line = ("Race," + i + ",Mp," + (race.Name) + "," 
+                        + race.Weather + "," 
+                        + (BooltoYN(race.NightMode)) + "," 
+                        + (race.Map.MapLocation) + "," 
+                        + race.IpAddress + "," 
+                        + race.StartInterval 
+                        + ",na");
+                }
+                else if (raceDict[i] is CpRace)
+                {
+                    CpRace race = (CpRace)raceDict[i];
+
+                    line = ("Race," + i + ",Cp," + (race.Name) + ","
+                        + race.Weather + ","
+                        + (BooltoYN(race.NightMode)) + ","
+                        + "na,na,na,"
+                        + race.CompID);
+                }
             }
-            else { }
-            return line;
         }
 
+        static string BooltoYN(bool input)
+        {
+            if (input == true) { return "yes"; } else { return "no"; }
+        }
 
         #endregion
 
