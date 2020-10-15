@@ -252,17 +252,26 @@ public class SpRace : IRace
 {
 
     protected ResultsFile resultsFile = new ResultsFile();  // Auto Generated
-    protected Map map = new Map();                  // Required
+    protected Map map = new Map();                          // Required
 
     protected string raceName;          // Optional
     protected string weather;           // Optional
     protected bool nightMode;           // optional
 
+    /// <summary>
+    /// Blank Constructor Function for a Singleplayer Race
+    /// </summary>
     public SpRace()
     {
 
     }
 
+    /// <summary>
+    /// Constructor Function for a Singleplayer Race
+    /// </summary>
+    /// <param name="_rN">The Race Name</param>
+    /// <param name="_w">The Race Weather</param>
+    /// <param name="_nM">Is the Race at night?</param>
     public SpRace(string _rN, string _w, bool _nM)
     {
         this.raceName = _rN;
@@ -270,6 +279,13 @@ public class SpRace : IRace
         this.nightMode = _nM;
     }
 
+    /// <summary>
+    /// Constructor Function for a Singleplayer Race
+    /// </summary>
+    /// <param name="_rN">The Race Name</param>
+    /// <param name="_w">The Race Weather</param>
+    /// <param name="_nM">Is the Race at night?</param>
+    /// <param name="_mL">The Map location</param>
     public SpRace(string _rN, string _w, bool _nM, string _mL)
     {
         this.raceName = _rN;
@@ -279,6 +295,55 @@ public class SpRace : IRace
         this.map.AddMapLocation(_mL);
     }
 
+    /// <summary>
+    /// The public property for SpRace.raceName : Will accept if length != 0
+    /// </summary>
+    public string Name
+    {
+        get { return this.raceName; }
+        set { if (value.Length > 0) { this.raceName = value; } else { } }
+    }
+
+    /// <summary>
+    /// The public property for SpRace.weather : Will accept if it is an accepted weather for cf
+    /// </summary>
+    public string Weather
+    {
+        get { return this.weather; }
+        set { if (CheckWeather(value)) { this.weather = value.ToUpper(); } else { } }
+    }
+    /// <summary>
+    /// Checks that the weather inputted is an acceptable cf weather
+    /// </summary>
+    /// <param name="weather">The string to check</param>
+    /// <returns></returns>
+    private bool CheckWeather(string weather)
+    {
+        if (weather.ToUpper() == "SUNNY") { return true; }
+        else if (weather.ToUpper() == "RAINING") { return true; }
+        else if (weather.ToUpper() == "SNOWING") { return true; }
+        else { return false; }
+    }
+
+    /// <summary>
+    /// The public property for SpRace.nightMode : Does not require any validation
+    /// </summary>
+    public bool NightMode
+    {
+        get { return this.nightMode; }
+
+        set { this.nightMode = value; }
+    }
+
+    /// <summary>
+    /// The public property for SpRace.map : Accepts if it as an acceptable map
+    /// </summary>
+    public Map Map
+    {
+        get { return this.map; }
+
+        set { if (Map.CheckMap(value)) { this.map = value; } else { } }
+    }
 }
 
 public class MpRace : IRace
@@ -377,7 +442,7 @@ public class MpRace : IRace
     /// <summary>
     /// The public property for MpRace.raceName : Will accept if it is not an empty string
     /// </summary>
-    public string RaceName
+    public string Name
     {
         get { return this.raceName; }
 
@@ -422,7 +487,7 @@ public class MpRace : IRace
     /// <summary>
     /// Checks that the weather inputted is an acceptable cf weather
     /// </summary>
-    /// <param name="weather"></param>
+    /// <param name="weather">The string to check</param>
     /// <returns></returns>
     private bool CheckWeather(string weather)
     {
@@ -456,6 +521,10 @@ public class MpRace : IRace
 public class CpRace : IRace
 {
 
+    protected string raceName;          // Optional
+    protected string weather;           // Optional
+    protected bool nightMode;           // Optional
+
     protected string compID;        // Required
     protected ResultsFile results;  // Auto Generated
 
@@ -483,6 +552,47 @@ public class CpRace : IRace
         // Must be in the list to be accepted
 
         return true;
+    }
+
+    /// <summary>
+    /// The Public Property for MpRace.raceName : Will accept if length != 0
+    /// </summary>
+    public string Name
+    {
+        get { return this.raceName; }
+        set { if (value.Length != 0) { this.raceName = value; }; }
+    }
+
+    /// <summary>
+    /// The public property for CpRace.weather : Will accept if it is an accepted weather for cf
+    /// </summary>
+    public string Weather
+    {
+        get { return this.weather; }
+
+        set { if (CheckWeather(value)) { this.weather = value.ToUpper(); } else { } }
+    }
+    /// <summary>
+    /// Checks that the weather inputted is an acceptable cf weather
+    /// </summary>
+    /// <param name="weather">The string to check</param>
+    /// <returns></returns>
+    private bool CheckWeather(string weather)
+    {
+        if (weather.ToUpper() == "SUNNY") { return true; }
+        else if (weather.ToUpper() == "RAINING") { return true; }
+        else if (weather.ToUpper() == "SNOWING") { return true; }
+        else { return false; }
+    }
+
+    /// <summary>
+    /// The public property for CpRace.nightMode : Does not require any validation
+    /// </summary>
+    public bool NightMode
+    {
+        get { return this.nightMode; }
+
+        set { this.nightMode = value; }
     }
 }
 
@@ -719,6 +829,12 @@ public class Map
         this.mapDescription = mD;
 
         this.hostFileLocation = loc;
+    }
+
+    public string MapLocation
+    {
+        get { return this.hostFileLocation; }
+        set { this.hostFileLocation = value; }
     }
 
     public bool CheckMap(Map map) { return true; }
