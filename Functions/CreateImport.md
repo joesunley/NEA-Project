@@ -1,8 +1,9 @@
 # Create Import
 
 ### Overview
-This code takes an inputted text file and Converts it to a `Competiton`.
-The text file is structured as such:
+This code takes an inputted string array and Converts it to a `Competiton`.
+The string array will usually be inputted from a text file.
+The array is structured as such:
 ```
 Competition,name,numRounds
 Round,ID,numGroups,numRaces,{Races(Id)}
