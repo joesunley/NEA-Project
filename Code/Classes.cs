@@ -522,8 +522,6 @@ public class CpRace : IRace
 {
 
     protected string raceName;          // Optional
-    protected string weather;           // Optional
-    protected bool nightMode;           // Optional
 
     protected string compID;        // Required
     protected ResultsFile results;  // Auto Generated
@@ -534,8 +532,15 @@ public class CpRace : IRace
     public CpRace() { }
 
     /// <summary>Constructor Function for a Competition Race</summary>
-    /// <param name="cID">The Catching Features Competition ID for this Race (Can be found on the CF Website</param>
-    public CpRace(string cID) { this.CompID = cID; }
+    /// <param name="cID">The Catching Features Competition ID for this Race (Can be found on the CF Website)</param>
+    public CpRace(string _cID) { this.CompID = _cID; }
+
+    /// <summary>
+    /// Constructor Function for a Competition Race
+    /// </summary>
+    /// <param name="_n">The Competition Name</param>
+    /// <param name="_cID">The Catching Features Competition ID for this Race (Can be found on the CF Website)</param>
+    public CpRace(string _n, string _cID) { this.Name = _n; this.CompID = _cID; }
 
     /// <summary>
     /// The public property for this.compID : Will accept if it is a valid competition
@@ -561,38 +566,6 @@ public class CpRace : IRace
     {
         get { return this.raceName; }
         set { if (value.Length != 0) { this.raceName = value; }; }
-    }
-
-    /// <summary>
-    /// The public property for CpRace.weather : Will accept if it is an accepted weather for cf
-    /// </summary>
-    public string Weather
-    {
-        get { return this.weather; }
-
-        set { if (CheckWeather(value)) { this.weather = value.ToUpper(); } else { } }
-    }
-    /// <summary>
-    /// Checks that the weather inputted is an acceptable cf weather
-    /// </summary>
-    /// <param name="weather">The string to check</param>
-    /// <returns></returns>
-    private bool CheckWeather(string weather)
-    {
-        if (weather.ToUpper() == "SUNNY") { return true; }
-        else if (weather.ToUpper() == "RAINING") { return true; }
-        else if (weather.ToUpper() == "SNOWING") { return true; }
-        else { return false; }
-    }
-
-    /// <summary>
-    /// The public property for CpRace.nightMode : Does not require any validation
-    /// </summary>
-    public bool NightMode
-    {
-        get { return this.nightMode; }
-
-        set { this.nightMode = value; }
     }
 }
 
