@@ -19,11 +19,11 @@ Round,0,4,3,{0 1 2}
 Round,1,2,2,{4 5}
 Round,2,1,1,{3}
 Race,0,Sp,Dumyat,Sunny,No,somefile,na,na,na
-Race,1,Cp,Stirling,Sunny,no,somefile,na,na,1536
-Race,2,Cp,Race 3,Sunny,no,somefile,na,na,1536
+Race,1,Cp,Stirling,na,na,na,na,na,1536
+Race,2,Cp,Race 3,na,na,na,na,na,1536
 Race,3,Mp,Circuit Board,Rainy,yes,somefile,128.0.12.3,MS,na
-Race,4,Cp,Race 5,Sunny,no,somefile,na,na,1536
-Race,5,Cp,Race 6,Sunny,no,somefile,na,na,1536
+Race,4,Cp,Race 5,na,na,na,na,na,1536
+Race,5,Cp,Race 6,na,na,na,na,na,1536
 ```
 
 ### Code
