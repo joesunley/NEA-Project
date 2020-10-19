@@ -188,20 +188,14 @@ public class Round
     }
 
     /// <summary>
-    /// The public property for the qualifiedCompetitors List
+    /// The public property for Round.qualifiedCompetitors
     /// </summary>
-    public List<Player> QualifiedCompetitors
-    {
-        get
-        {
-            return this.qualifiedCompetitors;
-        }
+    public List<Player> QualifiedCompetitors { get { return this.qualifiedCompetitors; } }
 
-        set
-        {
-
-        }
-    }
+    /// <summary>
+    /// The public property for Round.startingCompetitors
+    /// </summary>
+    public List<Player> StartingCompetitors { get { return this.startingCompetitors; } }
 
     /// <summary>
     /// Updates the Races within the groups
@@ -822,11 +816,25 @@ public class Map
 
 public class ResultsFile
 {
+    protected Dictionary<int, Tuple<Player, string>> results; //string in tuple is the players time: (mm:ss)
 
-    protected string[,] results; //position, personID
-
+    /// <summary>
+    /// Blank Constructor Function for the ResultsFile class
+    /// </summary>
     public ResultsFile()
     {
 
+    }
+
+    /// <summary>
+    /// A Function to add a new result to the Results List
+    /// </summary>
+    /// <param name="person"></param>
+    /// <param name="time"></param>
+    public void AddResult(int position, Player person, string time)
+    {
+        // Check for
+
+        results.Add(position, new Tuple<Player,string>(person, time));
     }
 }
