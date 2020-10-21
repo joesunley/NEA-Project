@@ -1,4 +1,4 @@
-# Create Export
+# Export Competition
 
 ### Overview
 This code takes a `Competition` class and converts it to a string array ready for being saved to a file. The array is structured as such:
@@ -18,7 +18,7 @@ The function contains multiple other subroutines and these are all shown below w
 
 **CreateExport**
 ```csharp
-        static string[] CreateExport(Competition comp)
+        static string[] ExportCompetition(Competition comp)
         {
 
             List<string> outputList = new List<string>();
