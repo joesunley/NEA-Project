@@ -1,4 +1,4 @@
-# Create Import
+# Import Competition
 
 ### Overview
 This code takes an inputted string array and Converts it to a `Competiton`.
@@ -18,7 +18,7 @@ The function contains multiple other subroutines and these are all shown below w
 
 **CreateImport**
 ```csharp
-        static Competition CreateImport(string[] import)
+        static Competition ImportCompetition(string[] import)
         {
             Competition comp = new Competition();
 
