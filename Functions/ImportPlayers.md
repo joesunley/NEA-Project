@@ -2,7 +2,7 @@
 
 ### Overview
 
-This function takes an string array and converts it to a list of `Player`'s.
+This function takes a string array and converts it to a list of `Player`'s.
 
 The array is structured as such: `Name, Email, Club, CF Username`
 ### Code
