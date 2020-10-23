@@ -1,24 +1,41 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using System.IO.Compression;
 
-namespace Zipping
+namespace Create_Player
 {
     class Program
     {
         static void Main(string[] args)
         {
-            string startPath = @".\start";
-            string zipPath = @".\result.zip";
-            string extractPath = @".\extract";
+            CreatePlayer();
+        }
 
-            ZipFile.CreateFromDirectory(startPath, zipPath);
+        static void CreatePlayer()
+        {
+            Player player = new Player();
 
-            ZipFile.ExtractToDirectory(zipPath, extractPath);
+            //name, club, email, username
 
+         
+            Console.Write("Enter the Player Name: ");
+            string name = Console.ReadLine();
+
+            Console.Write("Enter the Player Email: ");
+            string email = Console.ReadLine();
+
+            Console.Write("Enter the Club: ");
+            string club = Console.ReadLine();
+
+            Console.Write("Enter the Catching Features Username: ");
+            string username = Console.ReadLine();
+
+            player.Name = name;
+            player.Email = email;
+            player.Club = club;
+            player.Username = username;
         }
     }
 }
