@@ -1,37 +1,4 @@
-# Import & Export
-
-### Overview
-
-The first part of this project takes a Competition class and exports it to a text? file
-The second part takes in a text? file and converts it to a Competition class
-
-The structure for the text file is:
-```
-Competition,name,numRounds
-Round,ID,numGroups,numRaces,{Races(Id)}
-Race,Id,Type,name,weather,nightMode,mapLoc,ip,sI,compId
-```
-
-And some sample data that will be used for testing is:
-```
-Competition,MyComp,3
-Round,0,4,3,{0 1 2}
-Round,1,2,2,{4 5}
-Round,2,1,1,{3}
-Race,0,Sp,Dumyat,Sunny,No,somefile,na,na,na
-Race,1,Cp,Stirling,na,na,na,na,na,1536
-Race,2,Cp,Race 3,na,na,na,na,na,1536
-Race,3,Mp,Circuit Board,Rainy,yes,somefile,128.0.12.3,MS,na
-Race,4,Cp,Race 5,na,na,na,na,na,1536
-Race,5,Cp,Race 6,na,na,na,na,na,1536
-```
-
-### Code
-
-[Code file](https://github.com/joesunley/NEA-Project/blob/master/Resources/Code%20Files/Projects/Competition%20Import%20%26%20Export.cs)
-
-``` csharp
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -245,7 +212,3 @@ namespace Competition_Import___Export
         #endregion
     }
 }
-
-```
-
-### Testing

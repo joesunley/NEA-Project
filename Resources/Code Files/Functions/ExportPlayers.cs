@@ -1,15 +1,3 @@
-# Export Players
-
-### Overview
-
-This function takes a List of `Player`'s and coverts it to a string array
-
-The array is structured as such: `Name, Email, Club, CF Username`
-### Code
-
-[Code File](https://github.com/joesunley/NEA-Project/blob/master/Resources/Code%20Files/Functions/ExportPlayers.cs)
-
-```csharp
 public string[] ExportPlayers(List<Player> players)
         {
             List<string> exportList = new List<string>();
@@ -28,9 +16,3 @@ public string[] ExportPlayers(List<Player> players)
 
             return exportList.ToArray();
         }
-```
-### Testing
-
-#### Tests
-
-#### Screenshots

@@ -9,7 +9,11 @@ It checks for :
 * Only contains letters, spaces & hyphens
 
 If those criteria are met then the program returns **True**, else it returns **False**
+
 ### Code
+
+[Code File](https://github.com/joesunley/NEA-Project/blob/master/Resources/Code%20Files/Functions/CheckName.cs)
+
 ```csharp
 private bool CheckName(string name)
     {
@@ -19,15 +23,15 @@ private bool CheckName(string name)
 
         string[] split;
 
-        try { 
-            split = name.Split(' '); 
+        try {
+            split = name.Split(' ');
             if (split.Length >= 2) {
-                //Do Nothing 
-            } else { 
+                //Do Nothing
+            } else {
                 return false;
-            } 
-        } catch { 
-            return false; 
+            }
+        } catch {
+            return false;
         }
 
         for (int i = 0; i < name.Length; i += 1) {
@@ -35,7 +39,7 @@ private bool CheckName(string name)
                 //Do Nothing
             } else {
                 return false;
-            } 
+            }
         }
 
         return true;
@@ -58,4 +62,3 @@ Test no. | Test Type | Input Data | Expected Output | Output | Pass?
 10 |Boundary|Jo Sunley|True|True| Yes
 #### Screenshots
 ![CheckName Testing Screenshots](https://raw.githubusercontent.com/joesunley/NEA-Project/master/Resources/CheckName%20Testing%20Screenshots.png)
-

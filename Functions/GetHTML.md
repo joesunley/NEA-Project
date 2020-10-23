@@ -5,6 +5,9 @@
 This function gets the **raw** html from the inputted url : `string URL`. This html code is then returned as a string.
 
 ### Code
+
+[Code File](https://github.com/joesunley/NEA-Project/blob/master/Resources/Code%20Files/Functions/GetHTML.cs)
+
 ``` csharp
 using System.IO;
 using System.Net;

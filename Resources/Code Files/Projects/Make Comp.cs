@@ -1,18 +1,4 @@
-# Make Comp
-
-### Overview
-
-This Project is a CLI Interface for creating a basic competition
-
-The project can add: Rounds, Groups & Races
-It can't add players.
-
-### Code
-
-[Code File](https://github.com/joesunley/NEA-Project/blob/master/Resources/Code%20Files/Projects/Make%20Comp.cs)
-
-``` csharp
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -164,7 +150,3 @@ namespace Make_Comp
         }
     }
 }
-
-```
-
-### Testing

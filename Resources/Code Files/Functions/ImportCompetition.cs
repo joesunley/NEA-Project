@@ -1,26 +1,4 @@
-# Import Competition
-
-### Overview
-This code takes an inputted string array and Converts it to a `Competiton`.
-The string array will usually be inputted from a text file.
-The array is structured as such:
-```
-Competition,name,numRounds
-Round,ID,numGroups,numRaces,{Races(Id)}
-Race,Id,Type,name,weather,nightMode,mapLoc,ip,sI,compId
-```
-Depending on the type of Race some fields may contain "na" instead of a valid value, these are ignored by the function.
-
-The function contains multiple other subroutines and these are all shown below with the full code.
-
-
-### Code
-
-[Code File](https://github.com/joesunley/NEA-Project/blob/master/Resources/Code%20Files/Functions/ImportCompetition.cs)
-
-**CreateImport**
-```csharp
-        static Competition ImportCompetition(string[] import)
+static Competition ImportCompetition(string[] import)
         {
             Competition comp = new Competition();
 
@@ -71,10 +49,6 @@ The function contains multiple other subroutines and these are all shown below w
             return comp;
         }
 
-```
-
-**CreateComp**
-```csharp
         static Competition CreateComp(string[] line)
         {
             Competition comp = new Competition();
@@ -85,10 +59,6 @@ The function contains multiple other subroutines and these are all shown below w
             return comp;
         }
 
-```
-
-**CreateRound**
-```csharp
         static Round CreateRound(string[] line)
         {
             Round round = new Round();
@@ -98,10 +68,6 @@ The function contains multiple other subroutines and these are all shown below w
             return round;
         }
 
-```
-
-**CreateRace**
-```csharp
         static IRace CreateRace(string[] line)
         {
             if (line[2] == "Sp")
@@ -125,10 +91,6 @@ The function contains multiple other subroutines and these are all shown below w
             else { return new SpRace(); } //Just to remove the error - cannot end up with this
         }
 
-```
-
-**GetRacesforRound**
-```csharp
         static List<IRace> GetRacesforRound(string raceIds, List<IRace> allRaces)
         {
             raceIds = raceIds.Substring(1);
@@ -147,20 +109,7 @@ The function contains multiple other subroutines and these are all shown below w
 
         }
 
-```
-
-**YNtoBoolean**
-```csharp
         static bool YNtoBoolean(string input)
         {
             if (input.ToUpper() == "YES") { return true; } else { return false; }
         }
-
-```
-### Testing
-
-#### Tests
-
-
-
-#### Screenshots

@@ -1,14 +1,3 @@
-# Create Player
-
-### Overview
-
-This Project is a CLI interface for creating a `Player` object that can be used within competitions
-
-### Code
-
-[Code File](https://github.com/joesunley/NEA-Project/blob/master/Resources/Code%20Files/Projects/Create%20Player.cs)
-
-``` csharp
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -30,7 +19,7 @@ namespace Create_Player
 
             //name, club, email, username
 
-
+         
             Console.Write("Enter the Player Name: ");
             string name = Console.ReadLine();
 
@@ -50,6 +39,3 @@ namespace Create_Player
         }
     }
 }
-
-```
-### Testing

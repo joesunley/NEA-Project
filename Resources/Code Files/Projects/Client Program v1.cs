@@ -1,30 +1,15 @@
-# Make Comp
-
-### Overview
-
-This Project is a CLI Interface for creating a basic competition
-
-The project can add: Rounds, Groups & Races
-It can't add players.
-
-### Code
-
-[Code File](https://github.com/joesunley/NEA-Project/blob/master/Resources/Code%20Files/Projects/Make%20Comp.cs)
-
-``` csharp
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Make_Comp
+namespace Client_Program_v1
 {
     class Program
     {
         static void Main(string[] args)
         {
-            CreateComp();
         }
 
         static void CreateComp()
@@ -162,9 +147,17 @@ namespace Make_Comp
                 }
             }
         }
+
+        static void GetMyIP()
+        {
+            // Gets this machines IP
+        }
+
+        static void MainMenu()
+        {
+            Console.WriteLine("1. Create a new Competiton");
+            Console.WriteLine("2. Load a competition");
+            Console.WriteLine("3. Get my IP Address");
+        }
     }
 }
-
-```
-
-### Testing

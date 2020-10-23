@@ -6,7 +6,9 @@ This project is a first attempt at creating the program that will be responsible
 
 ### Code
 
-```c sharp
+[Code File](https://github.com/joesunley/NEA-Project/blob/master/Resources/Code%20Files/Projects/Client%20Program%20v1.cs)
+
+```csharp
 using System;
 using System.Collections.Generic;
 using System.Linq;

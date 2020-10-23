@@ -6,6 +6,8 @@ A project that takes the code for the [Competition Import + Export](https://gith
 
 ### Code
 
+[Code File](https://github.com/joesunley/NEA-Project/blob/master/Resources/Code%20Files/Projects/Binary%20File%20r%2Cw.cs)
+
 ```csharp
 using System;
 using System.Collections.Generic;

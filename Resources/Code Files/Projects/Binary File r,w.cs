@@ -1,57 +1,53 @@
-# Import & Export
-
-### Overview
-
-The first part of this project takes a Competition class and exports it to a text? file
-The second part takes in a text? file and converts it to a Competition class
-
-The structure for the text file is:
-```
-Competition,name,numRounds
-Round,ID,numGroups,numRaces,{Races(Id)}
-Race,Id,Type,name,weather,nightMode,mapLoc,ip,sI,compId
-```
-
-And some sample data that will be used for testing is:
-```
-Competition,MyComp,3
-Round,0,4,3,{0 1 2}
-Round,1,2,2,{4 5}
-Round,2,1,1,{3}
-Race,0,Sp,Dumyat,Sunny,No,somefile,na,na,na
-Race,1,Cp,Stirling,na,na,na,na,na,1536
-Race,2,Cp,Race 3,na,na,na,na,na,1536
-Race,3,Mp,Circuit Board,Rainy,yes,somefile,128.0.12.3,MS,na
-Race,4,Cp,Race 5,na,na,na,na,na,1536
-Race,5,Cp,Race 6,na,na,na,na,na,1536
-```
-
-### Code
-
-[Code file](https://github.com/joesunley/NEA-Project/blob/master/Resources/Code%20Files/Projects/Competition%20Import%20%26%20Export.cs)
-
-``` csharp
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.IO;
-using System.Net;
 
-
-namespace Competition_Import___Export
+namespace Binary_Files
 {
     class Program
     {
         static void Main(string[] args)
         {
+            BinaryWriter bw;
+            BinaryReader br;
+
             Competition comp = CreateImport(File.ReadAllLines("TestFile.txt"));
 
-            CreateExport(comp);
+            string[] output = CreateExport(comp);
+
+
+            Encoding utf8 = Encoding.UTF8;
+            bw = new BinaryWriter(new FileStream("mydata", FileMode.Create), utf8);
+
+            for (int i = 0; i < output.Length; i++)
+            {
+                bw.Write(output[i]);
+            }
+
+            bw.Close();
+
+
+            br = new BinaryReader(new FileStream("mydata", FileMode.Open), utf8);
+
+            bool eof = false;
+            List<string> input = new List<string>();
+
+            do
+            {
+                try
+                {
+                    input.Add(br.ReadString());
+                }
+                catch
+                {
+                    eof = true;
+                }
+            } while (eof == false);
         }
 
-        #region ExportProcedures
 
         static string[] CreateExport(Competition comp)
         {
@@ -62,23 +58,29 @@ namespace Competition_Import___Export
 
             outputList.Add(compLine);
 
-
-
-
-
-
-            return new string[2];
-        }
-
-        static void ConvertRace(Competition comp)
-        {
             List<IRace> allRaces = comp.GetRaces();
 
             Dictionary<int, IRace> raceDict = new Dictionary<int, IRace>();
 
             for (int i = 0; i < allRaces.Count; i++) { raceDict.Add(i, allRaces[i]); }
 
-            for (int i = 0; i < allRaces.Count; i++)
+            List<string> raceLines = ConvertRaces(raceDict);
+
+            List<string> roundLines = ConvertRounds(comp, raceDict);
+
+            outputList.AddRange(roundLines);
+            outputList.AddRange(raceLines);
+
+            string[] output = outputList.ToArray();
+
+            return output;
+        }
+
+        static List<string> ConvertRaces(Dictionary<int, IRace> raceDict)
+        {
+            List<string> raceLines = new List<string>();
+
+            for (int i = 0; i < raceDict.Count; i++)
             {
 
                 string line = "";
@@ -110,12 +112,58 @@ namespace Competition_Import___Export
                     CpRace race = (CpRace)raceDict[i];
 
                     line = ("Race," + i + ",Cp," + (race.Name) + ","
-                        + race.Weather + ","
-                        + (BooltoYN(race.NightMode)) + ","
-                        + "na,na,na,"
+                        + "na,na,na,na,na,"
                         + race.CompID);
                 }
+
+                raceLines.Add(line);
             }
+
+            return raceLines;
+        }
+
+        static List<string> ConvertRounds(Competition comp, Dictionary<int, IRace> raceDict)
+        {
+            List<string> rounds = new List<string>();
+
+
+            for (int i = 0; i < comp.rounds.Count; i++)
+            {
+                List<int> raceIds = new List<int>();
+
+                Round round = comp.rounds[i];
+                List<IRace> races = round.GetRaces();
+
+                #region Get nums
+                for (int j = 0; j < round.RaceCount(); j++)
+                {
+                    for (int k = 0; k < raceDict.Count; k++)
+                    {
+                        if (races[j] == raceDict[k])
+                        {
+                            raceIds.Add(k);
+                        }
+                    }
+                }
+                #endregion
+
+                string line = ("Round," + (i) + "," + (round.groups.Count) + "," + (round.RaceCount()) + ",{");
+
+
+
+                for (int j = 0; j < raceIds.Count; j++)
+                {
+                    if (j != 0) { line += " "; }
+
+                    line += ((raceIds[j].ToString()));
+                }
+
+                line += "}";
+
+                rounds.Add(line);
+            }
+
+            return rounds;
         }
 
         static string BooltoYN(bool input)
@@ -123,9 +171,8 @@ namespace Competition_Import___Export
             if (input == true) { return "yes"; } else { return "no"; }
         }
 
-        #endregion
 
-        #region Import Procedures
+
         static Competition CreateImport(string[] import)
         {
             Competition comp = new Competition();
@@ -212,7 +259,7 @@ namespace Competition_Import___Export
             }
             else if (line[2] == "Cp")
             {
-                CpRace race = new CpRace(line[9]);
+                CpRace race = new CpRace(line[3], line[9]);
 
                 return race;
             }
@@ -242,10 +289,5 @@ namespace Competition_Import___Export
             if (input.ToUpper() == "YES") { return true; } else { return false; }
         }
 
-        #endregion
     }
 }
-
-```
-
-### Testing

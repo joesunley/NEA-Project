@@ -1,14 +1,3 @@
-# Create Player
-
-### Overview
-
-This Project is a CLI interface for creating a `ResultsFile` object that can be used within competitions
-
-### Code
-
-[Code File](https://github.com/joesunley/NEA-Project/blob/master/Resources/Code%20Files/Projects/Upload%20Multiplayer%20Results.cs)
-
-``` csharp
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -73,6 +62,3 @@ namespace Upload_Multiplayer_Results
         }
     }
 }
-
-```
-### Testing

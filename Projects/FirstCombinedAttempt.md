@@ -7,7 +7,9 @@ This version is a CLI interface
 
 ### Code
 
-``` c sharp
+[Code File](https://github.com/joesunley/NEA-Project/blob/master/Resources/Code%20Files/Projects/FirstCombinedAttempt.cs)
+
+``` csharp
 using System;
 using System.Collections.Generic;
 using System.Linq;

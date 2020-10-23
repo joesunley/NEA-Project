@@ -1,15 +1,3 @@
-# Import Players
-
-### Overview
-
-This function takes a string array and converts it to a list of `Player`'s.
-
-The array is structured as such: `Name, Email, Club, CF Username`
-### Code
-
-[Code File](https://github.com/joesunley/NEA-Project/blob/master/Resources/Code%20Files/Functions/ImportPlayers.cs)
-
-```csharp
 public List<Player> ImportPlayers(string[] import)
         {
             List<Player> players = new List<Player>();
@@ -25,9 +13,3 @@ public List<Player> ImportPlayers(string[] import)
 
             return players;
         }
-```
-### Testing
-
-#### Tests
-
-#### Screenshots

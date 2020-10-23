@@ -1,23 +1,3 @@
-# Export Competition
-
-### Overview
-This code takes a `Competition` class and converts it to a string array ready for being saved to a file. The array is structured as such:
-
-```
-Competition,name,numRounds
-Round,ID,numGroups,numRaces,{Races(Id)}
-Race,Id,Type,name,weather,nightMode,mapLoc,ip,sI,compId
-```
-
-Depending on the type of Race some fields may contain "na" instead of a valid value, these are ignored by the function.
-
-The function contains multiple other subroutines and these are all shown below with the full code.
-
-
-### Code
-
-**CreateExport**
-```csharp
 static string[] ExportCompetition(Competition comp)
         {
 
@@ -45,9 +25,6 @@ static string[] ExportCompetition(Competition comp)
             return output;
         }
 
-```
-**ConvertRaces**
-```csharp
 static List<string> ConvertRaces(Dictionary<int, IRace> raceDict)
         {
             List<string> raceLines = new List<string>();
@@ -94,9 +71,6 @@ static List<string> ConvertRaces(Dictionary<int, IRace> raceDict)
             return raceLines;
         }
 
-```
-**ConvertRounds**
-```csharp
 static List<string> ConvertRounds(Competition comp, Dictionary<int, IRace> raceDict)
         {
             List<string> rounds = new List<string>();
@@ -141,20 +115,8 @@ static List<string> ConvertRounds(Competition comp, Dictionary<int, IRace> raceD
             return rounds;
         }
 
-```
-**BooltoYN**
-```csharp
-        static string BooltoYN(bool input)
+
+static string BooltoYN(bool input)
         {
             if (input == true) { return "yes"; } else { return "no"; }
         }
-
-```
-
-### Testing
-
-#### Tests
-
-
-
-#### Screenshots
