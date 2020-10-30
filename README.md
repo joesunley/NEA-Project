@@ -1,5 +1,5 @@
 # NEA Project
- 
+
 ### Current System
 At the moment the only way to create and manage a multi stage catching features competition is through using a spreadsheet such as excel or google sheets. This method requires a lot of manual input or complicated formulae.
 
@@ -16,7 +16,7 @@ The main features of the system will be:
 * [ ] Allow the creation of multi-race competitions with limited difficulty (Drag and Drop UI?)
 * [ ] Allow a host to upload custom map files for players to then download for use within multiplayer
 * [ ] Allow players to view the results from all races
-* [ ] Allow the host to choose a scoring system for races or create their own custom score
+* [ ] Allow the host to choose a scoring system for races or create their own custom score:
   * Percentages behind winner
   * 1st - 100, 2nd - 99
   * Etc
