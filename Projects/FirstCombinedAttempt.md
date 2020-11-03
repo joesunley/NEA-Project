@@ -433,16 +433,92 @@ namespace First_Combined_Attempt
 
             thisCompetition.rounds[roundNum].CreateRandomGroups();
 
+            BroadcastGroups(roundNum);
+
+            int numRaces = thisCompetition.rounds[roundNum].RaceCount();
+
+            List<ResultsFile> results = new List<ResultsFile>();
+
+            for (int i = 0; i < numRaces; i++)
+            {
+                results.Add(DoRace(roundNum, i));
+            }
             
+            return new List<Player>();
+        }
+        static ResultsFile DoRace(int roundNum, int raceNum)
+        {
+            ResultsFile thisResultsFile = new ResultsFile();
+
+            IRace thisRace = thisCompetition.rounds[roundNum].races[raceNum];
+
+            if (thisRace is SpRace)
+            {
+                thisResultsFile = AskForSpResults();
+
+                SpRace thisSpRace = (SpRace)thisRace;
+                thisSpRace.ResultsFile = thisResultsFile;
+
+                thisCompetition.rounds[roundNum].races[raceNum] = thisSpRace;
+            }
+            else if (thisRace is MpRace)
+            {
+                thisResultsFile = GetMpResults();
+
+                MpRace thisMpRace = (MpRace)thisRace;
+                thisMpRace.ResultsFile = thisResultsFile;
+
+                thisCompetition.rounds[roundNum].races[raceNum] = thisMpRace;
+            }
+            else if (thisRace is CpRace)
+            {
+                CpRace thisCpRace = (CpRace)thisRace;
+
+                thisResultsFile = thisCpRace.GetResults();
+
+                thisCpRace.ResultsFile = thisResultsFile;
+
+                thisCompetition.rounds[roundNum].races[raceNum] = thisCpRace;
+            }
+
+            return thisResultsFile;
         }
 
         #endregion
 
         #region Communication
 
-        static void BroadcastToAllPlayers(object toBroadcast) { }
-        
+        //Send
+        static void BroadcastToAllPlayers(object toBroadcast, int sendCode) { }
+        static void BroadcastGroups(int roundNum)
+        {
+            List<string> output = new List<string>();
+
+            Round thisRound = thisCompetition.rounds[roundNum];
+
+            List<List<Player>> groupedPlayers = thisRound.GetGroupedPlayers();
+
+            output.Add(("The groups for round " + (roundNum + 1) + " are as follows: "));
+
+            for (int i = 0; i < groupedPlayers.Count; i++)
+            {
+                output.Add("Group " + (i + 1) + ":");
+
+                for (int j = 0; j < groupedPlayers[i].Count; j++)
+                {
+                    output.Add(groupedPlayers[i][j].Name);
+                }
+            }
+
+            BroadcastToAllPlayers(output, 0000); // Need to do sendCode's
+        }
+
+        //Receive
+        static ResultsFile AskForSpResults() { return new ResultsFile(); }
+
         #endregion
+
+        static ResultsFile GetMpResults() { return new ResultsFile(); }
     }
 }
 
