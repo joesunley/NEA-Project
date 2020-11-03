@@ -77,12 +77,12 @@ public class Competition
 public class Round
 {
     public List<Group> groups = new List<Group>();
-    protected List<IRace> races = new List<IRace>();
+    public List<IRace> races = new List<IRace>();
 
     protected List<Player> startingCompetitors = new List<Player>();
     protected List<Player> qualifiedCompetitors = new List<Player>();
 
-
+    private List<List<Player>> groupedPlayers = new List<List<Player>>();
     /// <summary>
     /// Blank Constructor Function for a Round
     /// </summary>
@@ -127,7 +127,7 @@ public class Round
 
         List<Player> competitors = Randomise(this.startingCompetitors);
 
-        List<List<Player>> groupedPlayers = new List<List<Player>>();
+        List<List<Player>> groupPlayers = new List<List<Player>>();
 
         int groupCount = this.groups.Count;
         int playerCount = competitors.Count;
@@ -135,7 +135,7 @@ public class Round
         for (int i = 0; i < groupCount; i += 1)
         {
 
-            groupedPlayers.Add(new List<Player>());
+            groupPlayers.Add(new List<Player>());
         }
 
         for (int i = 0; i < playerCount; i += 1)
@@ -145,7 +145,7 @@ public class Round
                 try
                 {
 
-                    groupedPlayers[j].Add(this.startingCompetitors[i]);
+                    groupPlayers[j].Add(this.startingCompetitors[i]);
                     i += 1;
                 }
                 catch { } //Catches when finished
@@ -155,8 +155,10 @@ public class Round
 
         for (int i = 0; i < groupCount; i++)
         {
-            this.groups[i].competitors = groupedPlayers[i];
+            this.groups[i].competitors = groupPlayers[i];
         }
+
+        this.groupedPlayers = groupPlayers;
     }
 
     /// <summary>
@@ -247,7 +249,17 @@ public class Round
     /// <returns></returns>
     public int RaceCount() { return races.Count; }
 
+    /// <summary>
+    /// Gets all the races in the round
+    /// </summary>
+    /// <returns></returns>
     public List<IRace> GetRaces() { return races; }
+
+    /// <summary>
+    /// Gets the groups that players have been put in
+    /// </summary>
+    /// <returns></returns>
+    public List<List<Player>> GetGroupedPlayers() { return this.groupedPlayers; }
 }
 
 public class Group
@@ -338,6 +350,7 @@ public class SpRace : IRace
         get { return this.weather; }
         set { if (CheckWeather(value)) { this.weather = value.ToUpper(); } else { } }
     }
+
     /// <summary>
     /// Checks that the weather inputted is an acceptable cf weather
     /// </summary>
@@ -369,6 +382,16 @@ public class SpRace : IRace
         get { return this.map; }
 
         set { if (Map.CheckMap(value)) { this.map = value; } else { } }
+    }
+
+    /// <summary>
+    /// The public property for SpRace.resultsFile
+    /// </summary>
+    public ResultsFile ResultsFile
+    {
+        get { return this.resultsFile; }
+
+        set { this.resultsFile = value; }
     }
 }
 
@@ -542,6 +565,16 @@ public class MpRace : IRace
 
         set { if (Map.CheckMap(value)) { this.map = value; } else { } }
     }
+
+    /// <summary>
+    /// The public property for MpRace.resultsFile
+    /// </summary>
+    public ResultsFile ResultsFile
+    {
+        get { return this.resultsFile; }
+
+        set { this.resultsFile = value; }
+    }
 }
 
 public class CpRace : IRace
@@ -550,7 +583,7 @@ public class CpRace : IRace
     protected string raceName;          // Optional
 
     protected string compID;        // Required
-    protected ResultsFile results;  // Auto Generated
+    protected ResultsFile resultsFile;  // Auto Generated
 
     /// <summary>
     /// Blank Constructor Function for a Competition Race
@@ -592,6 +625,15 @@ public class CpRace : IRace
     {
         get { return this.raceName; }
         set { if (value.Length != 0) { this.raceName = value; }; }
+    }
+
+    public ResultsFile GetResults() { return new ResultsFile(); }
+
+    public ResultsFile ResultsFile
+    {
+        get { return this.resultsFile; }
+
+        set { this.resultsFile = value; }
     }
 }
 
@@ -869,4 +911,6 @@ public class ResultsFile
 
         results.Add(position, new Tuple<Player, string>(person, time));
     }
+
+    public Dictionary<int, Tuple<Player, string>> GetResults() { return this.results; }
 }
