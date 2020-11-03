@@ -12,6 +12,7 @@ using System.Threading.Tasks;
 public class Competition
 {
     public List<Round> rounds = new List<Round>();
+    public List<Player> startingPlayers = new List<Player>();
     protected string compName;
 
 
@@ -52,6 +53,24 @@ public class Competition
         }
 
         return races;
+    }
+
+    public void AddStartingPlayers(List<Player> lP)
+    {
+        this.startingPlayers = lP;
+
+        if (rounds.Count >= 1)
+        {
+            rounds[0].StartingCompetitors = lP;
+        }
+    }
+
+    public void UpdateGroups()
+    {
+        if (rounds.Count >= 1)
+        {
+            if (startingPlayers.Count > 0) { rounds[0].StartingCompetitors = this.startingPlayers; }
+        }
     }
 }
 
@@ -103,7 +122,7 @@ public class Round
     /// <summary>
     /// Takes the list of competitors and shuffles that list and then splits it into the correct number of groups // Still need to add functionality for what happens once it has split the players
     /// </summary>
-    private void CreateRandomGroups()
+    public void CreateRandomGroups()
     {
 
         List<Player> competitors = Randomise(this.startingCompetitors);
@@ -132,6 +151,11 @@ public class Round
                 catch { } //Catches when finished
 
             }
+        }
+
+        for (int i = 0; i < groupCount; i++)
+        {
+            this.groups[i].competitors = groupedPlayers[i];
         }
     }
 
@@ -190,12 +214,20 @@ public class Round
     /// <summary>
     /// The public property for Round.qualifiedCompetitors
     /// </summary>
-    public List<Player> QualifiedCompetitors { get { return this.qualifiedCompetitors; } }
+    public List<Player> QualifiedCompetitors 
+    { 
+        get { return this.qualifiedCompetitors; }
+        set { this.startingCompetitors = value; }
+    }
 
     /// <summary>
     /// The public property for Round.startingCompetitors
     /// </summary>
-    public List<Player> StartingCompetitors { get { return this.startingCompetitors; } }
+    public List<Player> StartingCompetitors
+    { 
+        get { return this.startingCompetitors; }
+        set { this.startingCompetitors = value; }
+    }
 
     /// <summary>
     /// Updates the Races within the groups
@@ -220,7 +252,7 @@ public class Round
 
 public class Group
 {
-    protected List<Player> competitors = new List<Player>();
+    public List<Player> competitors = new List<Player>();
     public List<IRace> races = new List<IRace>(); // Inherited from the Round
 
     /// <summary>
@@ -835,6 +867,6 @@ public class ResultsFile
     {
         // Check for
 
-        results.Add(position, new Tuple<Player,string>(person, time));
+        results.Add(position, new Tuple<Player, string>(person, time));
     }
 }
