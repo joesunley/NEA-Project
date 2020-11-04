@@ -81,8 +81,10 @@ public class Round
 
     protected List<Player> startingCompetitors = new List<Player>();
     protected List<Player> qualifiedCompetitors = new List<Player>();
+    protected int qualifyingPlayersPerGroup = 0;
 
     private List<List<Player>> groupedPlayers = new List<List<Player>>();
+
     /// <summary>
     /// Blank Constructor Function for a Round
     /// </summary>
@@ -913,4 +915,10 @@ public class ResultsFile
     }
 
     public Dictionary<int, Tuple<Player, string>> GetResults() { return this.results; }
+}
+
+public enum Qualifying
+{
+    percentage,
+    position
 }
