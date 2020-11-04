@@ -429,12 +429,12 @@ namespace First_Combined_Attempt
 
             for (int i = 0; i < numRaces; i++)
             {
-                results.Add(DoRace(roundNum, i));
+                results.Add(GetRaceResults(roundNum, i));
             }
             
             return new List<Player>();
         }
-        static ResultsFile DoRace(int roundNum, int raceNum)
+        static ResultsFile GetRaceResults(int roundNum, int raceNum)
         {
             ResultsFile thisResultsFile = new ResultsFile();
 
@@ -471,6 +471,154 @@ namespace First_Combined_Attempt
 
             return thisResultsFile;
         }
+        static List<Player> GetQualifiedPlayers(List<ResultsFile> results, int perGroup, Qualifying qual, int roundNum)
+        {
+            List<Player> outputPlayers = new List<Player>();
+
+            Dictionary<Player, List<double>> tempDict = new Dictionary<Player, List<double>>();
+            Dictionary<Player, double> finalDict = new Dictionary<Player, double>();
+            List<Player> players = thisCompetition.rounds[roundNum].StartingCompetitors;
+
+            for (int i = 0; i < players.Count; i++) { tempDict.Add(players[i], new List<double>()); }
+
+            #region Switch Statement
+
+            switch (qual)
+            {
+                case Qualifying.percentage:
+
+                    for (int i = 0; i < results.Count; i++)
+                    {
+                        ResultsFile currentRace = results[i];
+                        Dictionary<int, Tuple<Player, string>> rawResults = currentRace.GetResults();
+                        Dictionary<Player, double> unSortedResults = new Dictionary<Player, double>();
+                        Dictionary<Player, double> sortedResults = new Dictionary<Player, double>();
+                        double winnersTime = 999999; //
+
+                        for (int j = 0; j < rawResults.Count; j++)
+                        {
+                            Player currentPlayer = rawResults[j].Item1;
+                            string currentTime = rawResults[j].Item2;
+                            double time = ConvertTime(currentTime);
+
+                            unSortedResults.Add(currentPlayer, time);
+                            if (time < winnersTime) { winnersTime = time; }
+
+                        }
+
+                        sortedResults = unSortedResults.OrderBy(x => x.Value).ToDictionary(x => x.Key, x => x.Value);
+
+                        Dictionary<Player, double> percentageResults = new Dictionary<Player, double>();
+
+                        foreach (KeyValuePair<Player, double> result in sortedResults)
+                        {
+                            double percent = (100 * ((result.Value) / (winnersTime))) - 100;
+
+                            tempDict[result.Key].Add(percent);
+                        }
+
+                    }
+
+                    break;
+                case Qualifying.position:
+                    for (int i = 0; i < results.Count; i++)
+                    {
+                        ResultsFile currentRace = results[i];
+                        Dictionary<int, Tuple<Player, string>> rawResults = currentRace.GetResults();
+                        Dictionary<Player, double> unSortedResults = new Dictionary<Player, double>();
+                        Dictionary<Player, double> sortedResults = new Dictionary<Player, double>();
+                        double winnersTime = 999999; //
+
+                        for (int j = 0; j < rawResults.Count; j++)
+                        {
+                            Player currentPlayer = rawResults[j].Item1;
+                            string currentTime = rawResults[j].Item2;
+                            double time = ConvertTime(currentTime);
+
+                            unSortedResults.Add(currentPlayer, time);
+                            if (time < winnersTime) { winnersTime = time; }
+
+                        }
+
+                        sortedResults = unSortedResults.OrderBy(x => x.Value).ToDictionary(x => x.Key, x => x.Value);
+
+                        Dictionary<Player, double> scored = new Dictionary<Player, double>();
+
+                        int count = 0;
+
+                        foreach (KeyValuePair<Player, double> result in sortedResults)
+                        {
+                            tempDict[result.Key].Add(count);
+
+                            count += 1;
+                        }
+
+                    }
+                    break;
+                default: break;
+            }
+
+            #endregion
+
+            foreach (KeyValuePair<Player, List<double>> kP in tempDict)
+            {
+                List<double> scores = kP.Value;
+                double finalScore = 0;
+
+                foreach (double s in scores)
+                {
+                    finalScore += s;
+                }
+
+                finalDict[kP.Key] = finalScore;
+            }
+
+            List<Player> orderedPlayers = new List<Player>();
+
+            foreach (KeyValuePair<Player, double> pers in finalDict)
+            {
+                orderedPlayers.Add(pers.Key);
+            }
+
+            for (int i = 0; i < perGroup; i++)
+            {
+                outputPlayers.Add(orderedPlayers[i]);
+            }
+
+            return outputPlayers;
+        }
+
+        static double ConvertTime(string input)
+        {
+            List<string> valueArr = new List<string>();
+
+            if (input == "") { }
+            else { valueArr = input.Split(':').ToList<string>(); }
+
+            string hours = "", minutes = "", seconds = ""; 
+
+            try
+            {
+                hours = valueArr[0];
+                minutes = valueArr[1];
+                seconds = valueArr[2];
+            }
+            catch { MessageBox.Show("Invalid Data"); }
+
+            double hrs, secs, total;
+
+            try
+            {
+                hrs = Convert.ToDouble(hours) * 60;
+                secs = Convert.ToDouble(seconds) / 60;
+
+                total = hrs + secs + (Convert.ToDouble(minutes));
+            }
+            catch { total = 0; }
+
+            return total;                                                                                                                                                                                                                             
+        }
+        static ResultsFile GetMpResults() { return new ResultsFile(); }
 
         #endregion
 
@@ -501,11 +649,11 @@ namespace First_Combined_Attempt
             BroadcastToAllPlayers(output, 0000); // Need to do sendCode's
         }
 
+        static void BroadcastRace(int raceNum) { }
+
         //Receive
         static ResultsFile AskForSpResults() { return new ResultsFile(); }
 
         #endregion
-
-        static ResultsFile GetMpResults() { return new ResultsFile(); }
     }
 }
