@@ -474,7 +474,7 @@ namespace First_Combined_Attempt
             {
                 CpRace thisCpRace = (CpRace)thisRace;
 
-                thisResultsFile = thisCpRace.GetResults();
+                thisResultsFile = GetCpResults(roundNum, raceNum);
 
                 thisCpRace.ResultsFile = thisResultsFile;
 
@@ -502,7 +502,7 @@ namespace First_Combined_Attempt
                     for (int i = 0; i < results.Count; i++)
                     {
                         ResultsFile currentRace = results[i];
-                        Dictionary<int, Tuple<Player, string>> rawResults = currentRace.GetResults();
+                        Dictionary<int, Tuple<Player, string>> rawResults = currentRace.Results;
                         Dictionary<Player, double> unSortedResults = new Dictionary<Player, double>();
                         Dictionary<Player, double> sortedResults = new Dictionary<Player, double>();
                         double winnersTime = 999999; //
@@ -536,7 +536,7 @@ namespace First_Combined_Attempt
                     for (int i = 0; i < results.Count; i++)
                     {
                         ResultsFile currentRace = results[i];
-                        Dictionary<int, Tuple<Player, string>> rawResults = currentRace.GetResults();
+                        Dictionary<int, Tuple<Player, string>> rawResults = currentRace.Results;
                         Dictionary<Player, double> unSortedResults = new Dictionary<Player, double>();
                         Dictionary<Player, double> sortedResults = new Dictionary<Player, double>();
                         double winnersTime = 999999; //
@@ -632,6 +632,105 @@ namespace First_Combined_Attempt
         }
         static ResultsFile GetMpResults() { return new ResultsFile(); }
 
+        #region static ResultsFile GetCpResults()
+
+        static ResultsFile GetCpResults(int roundNum, int raceNum)
+        {
+            ResultsFile results = new ResultsFile();
+            Dictionary<int, Tuple<Player, string>> resultsDict = new Dictionary<int, Tuple<Player, string>>();
+
+            CpRace thisRace = (CpRace)thisCompetition.rounds[roundNum].races[raceNum];
+
+            string compId = thisRace.CompID;
+            List<string> rawResults = GetRawResults(compId);
+
+            for (int i = 0; i < thisCompetition.startingPlayers.Count; i++)
+            {
+                Player thisPlayer = thisCompetition.startingPlayers[i];
+
+                for (int j = 0; j < rawResults.Count; j++)
+                {
+                    string thisLine = rawResults[j];
+                    string[] spl = thisLine.Split(',');
+                    string userName = spl[0];
+
+                    if (thisPlayer.Username == userName)
+                    {
+                        resultsDict.Add(resultsDict.Count, new Tuple<Player,string> (thisPlayer, spl[3]));
+                    }
+                }   
+            }
+
+            results.Results = resultsDict;
+
+
+            return results;
+        }
+        static string GetHTML(string URL)
+        {
+            StreamReader instream;
+            WebRequest webrequest;
+            WebResponse webresponse;
+
+            webrequest = WebRequest.Create(URL);
+            webresponse = webrequest.GetResponse();
+            instream = new StreamReader(webresponse.GetResponseStream());
+
+            return instream.ReadToEnd().ToString();
+        }
+        static List<string> SplitResults(string html)
+        {
+            html = html.Substring(html.IndexOf("<table width=100% cellspacing=0 class=resultlist>"));
+            html = html.Substring(0, (html.IndexOf("</table>") + 8));
+
+            string[] rows = html.Split(new string[] { "</tr>" }, StringSplitOptions.None);
+
+            List<string> results = new List<string>();
+
+            for (int i = 0; i < rows.Length; i++)
+            {
+                try
+                {
+                    string curr = rows[i];
+
+                    string name, club, time;
+                    string[] names;
+
+                    name = curr.Substring(curr.IndexOf("userid"));
+                    name = name.Substring(0, name.IndexOf("</a>"));
+
+                    names = name.Split(new string[] { "\">" }, StringSplitOptions.None);
+                    names[0] = names[0].Substring(names[0].IndexOf('=') + 1);
+                    name = names[1] + "," + names[0];
+
+                    club = curr.Substring(curr.IndexOf("color=") + 14);
+
+                    time = club;
+
+                    club = club.Substring(0, club.IndexOf("</font"));
+
+                    time = time.Substring(time.IndexOf("<td>") + 4);
+                    time = time.Substring(0, time.IndexOf("<"));
+
+                    string result = name + "," + club + "," + time;
+                    results.Add(result);
+                }
+                catch { }
+            }
+
+            return results;
+        }
+        static List<string> GetRawResults(string compId)
+        {
+            string url = "http://www.catchingfeatures.com/comps/raceinfo/php?raceid=" + compId;
+            string html = GetHTML(url);
+            List<string> rawResults = SplitResults(html);
+
+            return rawResults;
+        }
+
+        #endregion
+
         #endregion
 
         #region Communication
@@ -669,5 +768,6 @@ namespace First_Combined_Attempt
         #endregion
     }
 }
+
 ```
 ### Testing
