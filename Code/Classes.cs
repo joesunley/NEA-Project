@@ -218,8 +218,8 @@ public class Round
     /// <summary>
     /// The public property for Round.qualifiedCompetitors
     /// </summary>
-    public List<Player> QualifiedCompetitors 
-    { 
+    public List<Player> QualifiedCompetitors
+    {
         get { return this.qualifiedCompetitors; }
         set { this.startingCompetitors = value; }
     }
@@ -228,7 +228,7 @@ public class Round
     /// The public property for Round.startingCompetitors
     /// </summary>
     public List<Player> StartingCompetitors
-    { 
+    {
         get { return this.startingCompetitors; }
         set { this.startingCompetitors = value; }
     }
@@ -914,7 +914,15 @@ public class ResultsFile
         results.Add(position, new Tuple<Player, string>(person, time));
     }
 
-    public Dictionary<int, Tuple<Player, string>> GetResults() { return this.results; }
+    /// <summary>
+    /// Public Property for ResultsFile.results
+    /// </summary>
+    public Dictionary<int, Tuple<Player, string>> Results
+    {
+        get { return this.results; }
+
+        set { this.results = value; }
+    }
 }
 
 public enum Qualifying
