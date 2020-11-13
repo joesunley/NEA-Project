@@ -6,7 +6,14 @@ A piece of code that will send a file to the specified location: `iP` & `port`
 
 ### Code
 
+[Code File](https://github.com/joesunley/NEA-Project/blob/master/Resources/Code%20Files/Functions/SendFiles.cs)
+
+
 ``` csharp
+using System.IO;
+using System.Net;
+using System.Net.Sockets;
+
 public static void SendFile(string filePath, string iP, int port)
         {
             byte[] sendingBuffer = null;
