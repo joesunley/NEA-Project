@@ -1,3 +1,7 @@
+using System.IO;
+using System.Net;
+using System.Net.Sockets;
+
 public static void SendFile(string filePath, string iP, int port)
         {
             byte[] sendingBuffer = null;
