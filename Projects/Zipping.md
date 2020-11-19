@@ -4,9 +4,11 @@
 
 This Project is a CLI Interface for creating a basic competition
 
-The project can add: Rounds, Groups & Races
+The project can add: Rounds, Groups & Races <br>
 It can't add players.
 
+In order for the ZipFile to appear, the System.IO.Compression.FileSystem reference must be added:
+Project > Add Reference
 ### Code
 
 ``` csharp
