@@ -15,12 +15,19 @@ public class Competition
     public List<Player> startingPlayers = new List<Player>();
     protected string compName;
 
+    protected Qualifying qualMode;
 
+    /// <summary>
+    /// Blank Constructor Function for a Competition
+    /// </summary>
     public Competition()
     {
 
     }
 
+    /// <summary>
+    /// Public property for Competition.Name
+    /// </summary>
     public string Name
     {
         get
@@ -43,6 +50,10 @@ public class Competition
         for (int i = 0; i < _count; i += 1) { rounds.Add(new Round()); }
     }
 
+    /// <summary>
+    /// Returns all the races in a competition
+    /// </summary>
+    /// <returns></returns>
     public List<IRace> GetRaces()
     {
         List<IRace> races = new List<IRace>();
@@ -55,6 +66,10 @@ public class Competition
         return races;
     }
 
+    /// <summary>
+    /// Adds a List of Players as the Initial Starting Competitors
+    /// </summary>
+    /// <param name="lP">the List of Players</param>
     public void AddStartingPlayers(List<Player> lP)
     {
         this.startingPlayers = lP;
@@ -65,12 +80,25 @@ public class Competition
         }
     }
 
+    /// <summary>
+    /// Updates the first Round with the starting Competitors // Needs to be changes
+    /// </summary>
     public void UpdateGroups()
     {
         if (rounds.Count >= 1)
         {
             if (startingPlayers.Count > 0) { rounds[0].StartingCompetitors = this.startingPlayers; }
         }
+    }
+
+    /// <summary>
+    /// Public Property for Competition.qualMode
+    /// </summary>
+    public Qualifying QualifyingMode
+    {
+        get { return this.qualMode; }
+
+        set { this.qualMode = value; }
     }
 }
 
@@ -81,7 +109,7 @@ public class Round
 
     protected List<Player> startingCompetitors = new List<Player>();
     protected List<Player> qualifiedCompetitors = new List<Player>();
-    protected int qualifyingPlayersPerGroup = 0;
+    protected int numQualPlayers;
 
     private List<List<Player>> groupedPlayers = new List<List<Player>>();
 
@@ -262,6 +290,16 @@ public class Round
     /// </summary>
     /// <returns></returns>
     public List<List<Player>> GetGroupedPlayers() { return this.groupedPlayers; }
+
+    /// <summary>
+    /// Public Property for Round.numQualPlayers
+    /// </summary>
+    public int NumberOfQualifyingPlayers
+    {
+        get { return this.numQualPlayers; }
+
+        set { this.numQualPlayers = value; }
+    }
 }
 
 public class Group
@@ -383,7 +421,7 @@ public class SpRace : IRace
     {
         get { return this.map; }
 
-        set { if (Map.CheckMap(value)) { this.map = value; } else { } }
+        set { this.map = value; }
     }
 
     /// <summary>
@@ -400,8 +438,6 @@ public class SpRace : IRace
 public class MpRace : IRace
 {
 
-
-    protected Host host;                // Required (Auto Generated)
     protected IPAddress ipAddress;      // Required
     protected string raceName;          // Optional
     protected string startInterval;     // Optional
@@ -412,23 +448,21 @@ public class MpRace : IRace
     protected Map map = new Map();                          // Required
 
     /// <summary>
-    /// Blank Constuctor Function for a MultiPlayer Race
+    /// Blank Constuctor Function for a Multiplayer Race
     /// </summary>
     public MpRace() { }
 
     /// <summary>
-    /// Contstructor Function for a MultiPlayer Race
+    /// Constructor Function for a Multiplayer Race
     /// </summary>
-    /// <param name="h">The Host for this race</param>
-    /// <param name="ip">The Host's ip Address</param>
+    /// <param name="ip">The Host's IP Address</param>
     /// <param name="rN">The name of the race</param>
-    /// <param name="sI">The start interval: Mass Start, 15, 30, 45, 60, 120</param>
+    /// <param name="sI">The start interval: MS, 15, 30, 45, 60, 120</param>
     /// <param name="wT">The weather during the race: Sunny, Raining, Snowing</param>
     /// <param name="night">Whether the race is at night or not</param>
     /// <param name="m">The map for the race</param>
-    public MpRace(Host h, string ip, string rN, string sI, string wT, bool night, Map m)
+    public MpRace(string ip, string rN, string sI, string wT, bool night, Map m)
     {
-        this.host = h;
         this.ipAddress = IPAddress.Parse(ip);
         this.raceName = rN;
         this.startInterval = sI;
@@ -437,6 +471,15 @@ public class MpRace : IRace
         this.map = m;
     }
 
+    /// <summary>
+    /// Constructor  Function for a Multiplayer Race
+    /// </summary>
+    /// <param name="ip">The Host's IP Address</param>
+    /// <param name="rN">The name of the race</param>
+    /// <param name="sI">The start interval: MS, 15, 30, 45, 60, 120</param>
+    /// <param name="wT">The weather during the race: Sunny, Raining, Snowing</param>
+    /// <param name="night">Whether the race is at night or not</param>
+    /// <param name="mL">The location for the Map file</param>
     public MpRace(string ip, string rN, string sI, string wT, bool night, string mL)
     {
         this.ipAddress = IPAddress.Parse(ip);
@@ -470,27 +513,6 @@ public class MpRace : IRace
     }
 
     /// <summary>
-    /// The public property for MpRace.host : Will accept if the input is an acceptable host
-    /// </summary>
-    public Host Host
-    {
-        get { return host; }
-
-        set
-        {
-            if (Host.CheckHost(value))
-            {
-                this.host = value;
-                this.ipAddress = IPAddress.Parse(value.IpAddress);// IpAddress Property in Host Class
-            }
-            else
-            {
-                // Return Error
-            }
-        }
-    }
-
-    /// <summary>
     /// The public property for MpRace.raceName : Will accept if it is not an empty string
     /// </summary>
     public string Name
@@ -516,7 +538,7 @@ public class MpRace : IRace
     /// <returns></returns>
     private bool CheckStartInterval(string sI)
     {
-        //Mass Start, 15, 30, 45, 60, 120
+        //MS (Mass Start), 15, 30, 45, 60, 120
 
         if (sI.ToUpper() == "MS") { return true; }
         else if (sI == "30") { return true; }
@@ -565,7 +587,7 @@ public class MpRace : IRace
     {
         get { return this.map; }
 
-        set { if (Map.CheckMap(value)) { this.map = value; } else { } }
+        set { this.map = value; }
     }
 
     /// <summary>
@@ -612,6 +634,11 @@ public class CpRace : IRace
 
         set { if (CheckCompID(value)) { this.compID = value; } }
     }
+    /// <summary>
+    /// Checks that the imputted Competition ID is valid
+    /// </summary>
+    /// <param name="value">The Competition ID</param>
+    /// <returns></returns>
     private bool CheckCompID(string value)
     {
         // Will Check the Catching Features servers for current competitions
@@ -629,8 +656,9 @@ public class CpRace : IRace
         set { if (value.Length != 0) { this.raceName = value; }; }
     }
 
-    public ResultsFile GetResults() { return new ResultsFile(); }
-
+    /// <summary>
+    /// The public property for MpRace.resultsFile
+    /// </summary>
     public ResultsFile ResultsFile
     {
         get { return this.resultsFile; }
@@ -646,6 +674,8 @@ public class Player
     protected string club;
     protected string username;
 
+    protected string ipAddress;
+
 
     /// <summary>
     /// Blank Constructor Function for a Player
@@ -653,7 +683,7 @@ public class Player
     public Player() { }
 
     /// <summary>Constructor Function for a Player</summary>
-    /// <param name="n">The Players name</param>
+    /// <param name="n">The Players Name</param>
     /// <param name="e">The Players Email Address</param>
     /// <param name="cl">The Players Club</param>
     /// <param name="u">The Players Catching Features Username</param>
@@ -663,6 +693,23 @@ public class Player
         this.email = e;
         this.club = cl;
         this.username = u;
+    }
+
+    /// <summary>
+    /// Constructor Function for a Player - includes IP Address
+    /// </summary>
+    /// <param name="n">The Players Name</param>
+    /// <param name="e">The Players Email Address</param>
+    /// <param name="cl">The Players Club</param>
+    /// <param name="u">The Players Catching Features Username</param>
+    /// <param name="iP">The Players IP Address</param>
+    public Player(string n, string e, string cl, string u, string iP)
+    {
+        this.name = n;
+        this.email = e;
+        this.club = cl;
+        this.username = u;
+        this.ipAddress = iP;
     }
 
     /// <summary>
@@ -712,7 +759,11 @@ public class Player
             if (CheckEmail(value)) { this.email = value; } //CheckEmail doesn'tdo anything atm - will check for: ??? @ ??? . ???
         }
     }
-
+    /// <summary>
+    /// Checks that the email provided is a valid email address
+    /// </summary>
+    /// <param name="email">The email address to be checked</param>
+    /// <returns></returns>
     private bool CheckEmail(string email)
     {
         const string acceptableDomainChars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-.";
@@ -776,73 +827,27 @@ public class Player
             //Check the CF website for current players in ranking. Must be in ranking to allow
         }
     }
-}
-
-public class Host : Player
-{
-    protected IPAddress iPAddress;
 
     /// <summary>
-    /// Blank Constructor Function for a Host
+    /// Public property for Player.ipAddress
     /// </summary>
-    public Host() { }
-
-    /// <summary>Constructor Function for a Host</summary>
-    /// <param name="n">The Players name</param>
-    /// <param name="e">The Players Email Address</param>
-    /// <param name="cl">The Players Club</param>
-    /// <param name="u">The Players Catching Features Username</param>
-    /// <param name="ip">The Host's IP Address</param>
-    public Host(string n, string e, string cl, string U, string ip)
-    {
-        this.name = n;
-        this.email = e;
-        this.club = cl;
-        this.username = U;
-        this.iPAddress = IPAddress.Parse(ip);
-    }
-
-    /// <summary>Constructor Function for a Host that uses a already existing Person</summary>
-    /// <param name="player">A Player that has previously been created</param>
-    /// <param name="ip">The Host's IP Address</param>
-    public Host(Player player, string ip)
-    {
-        this.name = player.Name;
-        this.email = player.Email;
-        this.club = player.Club;
-        this.username = player.Username;
-
-        this.iPAddress = IPAddress.Parse(ip); ;
-
-    }
-
     public string IpAddress
     {
-        get { return this.iPAddress.ToString(); }
+        get { return this.ipAddress; }
 
-        set { try { this.iPAddress = IPAddress.Parse(value); } catch { } }
+        set
+        {
+            IPAddress ip;
+            if (IPAddress.TryParse(value, out ip))
+            {
+                this.ipAddress = value;
+            }
+            else
+            {
+                //Invalid
+            }
+        }
     }
-
-    public string[] GetStringArr()
-    {
-        List<string> lStr = new List<string>();
-
-        lStr.Add(this.name);
-        lStr.Add(this.username);
-        lStr.Add(this.email);
-        lStr.Add(this.club);
-        lStr.Add(this.iPAddress.ToString());
-
-        return lStr.ToArray();
-    }
-    public bool CheckHost(Host host)
-    {
-        bool accepted = true;
-
-
-
-        return accepted;
-    } // To be completed
 }
 
 public class Map
@@ -854,17 +859,30 @@ public class Map
     string mapMapper = "";      // Optional
     string mapDescription = ""; // Optional
 
-
+    /// <summary>
+    /// Blank constructor function for a Map
+    /// </summary>
     public Map()
     {
 
     }
 
+    /// <summary>
+    /// Constructor function for a Map
+    /// </summary>
+    /// <param name="loc">The file location for the map</param>
     public Map(string loc)
     {
         this.hostFileLocation = loc;
     }
 
+    /// <summary>
+    /// Constructor Function for a Map
+    /// </summary>
+    /// <param name="loc">The file location of the map</param>
+    /// <param name="mN">The Map name</param>
+    /// <param name="mM">The Mapper's name</param>
+    /// <param name="mD">A description of the map</param>
     public Map(string loc, string mN, string mM, string mD)
     {
         this.mapName = mN;
@@ -874,19 +892,13 @@ public class Map
         this.hostFileLocation = loc;
     }
 
+    /// <summary>
+    /// Public property for Map.hostFileLocation
+    /// </summary>
     public string MapLocation
     {
         get { return this.hostFileLocation; }
         set { this.hostFileLocation = value; }
-    }
-
-    public bool CheckMap(Map map) { return true; }
-
-    public void PrepareForSending() { }
-
-    public void AddMapLocation(string _mapLoc)
-    {
-        this.hostFileLocation = _mapLoc;
     }
 }
 
