@@ -19,6 +19,7 @@ using System.IO;
 using System.Windows.Forms;
 using System.IO.Compression;
 using System.Net;
+using System.Net.Sockets;
 
 namespace First_Combined_Attempt
 {
@@ -32,6 +33,7 @@ namespace First_Combined_Attempt
         }
 
         #region Main Menu
+
         static void MainMenu()
         {
             while (true)
@@ -39,7 +41,7 @@ namespace First_Combined_Attempt
                 DisplayMainMenu();
                 GetSelection();
             }
-            
+
         }
         static void DisplayMainMenu()
         {
@@ -51,7 +53,7 @@ namespace First_Combined_Attempt
             Console.WriteLine("5. Exit");
             Console.WriteLine();
         }
-        static void GetSelection() 
+        static void GetSelection()
         {
             Console.Write("Enter your Choice: ");
             string choice = Console.ReadLine();
@@ -68,7 +70,7 @@ namespace First_Combined_Attempt
         }
 
         static void CreateComp() { thisCompetition = CreateCompetition(); }
-        static void LoadComp() 
+        static void LoadComp()
         {
             Console.Clear();
             Console.Write("Enter the location for the Competition File: ");
@@ -93,15 +95,32 @@ namespace First_Combined_Attempt
                 string[] import = importList.ToArray();
                 thisCompetition = CreateImport(import);
             }
-            
+
         }
         static void AddPlayers() { ConnectPlayers(); }
         static void StartComp() { }
         static void Exit() { Environment.Exit(0); }
         static void IncorrectInp() { MessageBox.Show("The value you entered was not valid, please try again."); MainMenu(); }
+
         #endregion
 
         #region Create Competition
+
+        //In order to create a competition the program asks for:
+        //  The Title
+        //  The number of rounds
+        //  For each round:
+        //      The number of groups
+        //      The number of races
+        //
+        //      The Number of Players that will move through to the next round
+        //      The qualifying format: Percentage or Position
+        //
+        //      For each race:
+        //          The race type
+        //          The Title
+        //          The Map location / Competition ID
+        //          Other questions about the Race that change depending on the type
 
         static Competition CreateCompetition()
         {
@@ -157,7 +176,7 @@ namespace First_Combined_Attempt
                             mapLoc = Console.ReadLine();
 
                             mapLoc = CreateZip(mapLoc);
-                            
+
                         }
 
 
@@ -254,7 +273,7 @@ namespace First_Combined_Attempt
                 endPath = filePath.Substring(0, filePath.Length - 1);
                 string[] split = endPath.Split('\\');
                 endPath = "";
-                
+
                 for (int i = 0; i < split.Length - 1; i++) { endPath += split[i] + "\\"; }
 
                 endPath += "result.zip";
@@ -419,15 +438,15 @@ namespace First_Combined_Attempt
                 if (i == 0)
                 {
                     startingPlayers = thisCompetition.startingPlayers;
-                    startingPlayers = DoRound(i, startingPlayers);
+                    startingPlayers = DoRound(i, startingPlayers, thisCompetition.rounds[i].NumberOfQualifyingPlayers, thisCompetition.QualifyingMode);
                 }
                 else
                 {
-                    startingPlayers = DoRound(i, startingPlayers);
+                    startingPlayers = DoRound(i, startingPlayers, thisCompetition.rounds[i].NumberOfQualifyingPlayers, thisCompetition.QualifyingMode);
                 }
             }
         }
-        static List<Player> DoRound(int roundNum, List<Player> players)
+        static List<Player> DoRound(int roundNum, List<Player> players, int totalQual, Qualifying qualMode)
         {
             thisCompetition.rounds[roundNum].StartingCompetitors = players;
 
@@ -443,9 +462,13 @@ namespace First_Combined_Attempt
             {
                 results.Add(GetRaceResults(roundNum, i));
             }
-            
-            return new List<Player>();
-        }
+
+            int numGroups = thisCompetition.rounds[roundNum].groups.Count;
+
+            List<Player> qualifiedPlayers = GetQualifiedPlayers(results, Convert.ToInt16(Math.Round((decimal)(totalQual / numGroups))), qualMode, roundNum);
+
+            return qualifiedPlayers;
+        } //Possibly Complete
         static ResultsFile GetRaceResults(int roundNum, int raceNum)
         {
             ResultsFile thisResultsFile = new ResultsFile();
@@ -482,7 +505,7 @@ namespace First_Combined_Attempt
             }
 
             return thisResultsFile;
-        }
+        } //Complete
         static List<Player> GetQualifiedPlayers(List<ResultsFile> results, int perGroup, Qualifying qual, int roundNum)
         {
             List<Player> outputPlayers = new List<Player>();
@@ -598,7 +621,7 @@ namespace First_Combined_Attempt
             }
 
             return outputPlayers;
-        }
+        } //Believe is Complete
 
         static double ConvertTime(string input)
         {
@@ -607,7 +630,7 @@ namespace First_Combined_Attempt
             if (input == "") { }
             else { valueArr = input.Split(':').ToList<string>(); }
 
-            string hours = "", minutes = "", seconds = ""; 
+            string hours = "", minutes = "", seconds = "";
 
             try
             {
@@ -761,6 +784,89 @@ namespace First_Combined_Attempt
         }
 
         static void BroadcastRace(int raceNum) { }
+
+        static void SendFile(string filePath, string iPAddress, int port)
+        {
+            int bufferSize = 1024;
+
+            byte[] sendingBuffer = null;
+            TcpClient client = null;
+            NetworkStream netStream = null;
+
+            try
+            {
+                client = new TcpClient(iPAddress, port);
+                //Connected to the server
+                netStream = client.GetStream();
+                FileStream fS = new FileStream(filePath, FileMode.Open, FileAccess.Read);
+                int noPackets = Convert.ToInt32(Math.Ceiling(Convert.ToDouble(fS.Length) / Convert.ToDouble(bufferSize)));
+                int tLength = (int)fS.Length;
+                int currPacketLen;
+
+                for (int i = 0; i < noPackets; i++)
+                {
+                    if (tLength > bufferSize)
+                    {
+                        currPacketLen = bufferSize;
+                        tLength = tLength - currPacketLen;
+                    }
+                    else
+                    {
+                        currPacketLen = tLength;
+                        sendingBuffer = new byte[currPacketLen];
+                        fS.Read(sendingBuffer, 0, currPacketLen);
+                        netStream.Write(sendingBuffer, 0, (int)sendingBuffer.Length);
+                    }
+
+                    fS.Close();
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+            finally
+            {
+                netStream.Close();
+                client.Close();
+            }
+        }
+        static void SendRaceFiles(Competition thisComp, int roundNum)
+        {
+            int outPort = 000; //Need To Decide on Ports
+
+            Round thisRound = thisComp.rounds[roundNum];
+
+            List<Tuple<Player, string>> players = new List<Tuple<Player, string>>();
+
+            List<Player> pl = thisRound.StartingCompetitors;
+            for (int i = 0; i < thisRound.StartingCompetitors.Count; i++)
+            {
+                Tuple<Player, string> outPoint = new Tuple<Player, string>(pl[i], pl[i].IpAddress);
+                players.Add(outPoint);
+            }
+
+            for (int i = 0; i < thisRound.races.Count; i++)
+            {
+                for (int j = 0; j < players.Count; j++)
+                {
+                    IRace thisRace = thisRound.races[i];
+
+                    if (thisRace is SpRace)
+                    {
+                        SpRace race = (SpRace)thisRace;
+
+                        SendFile(race.Map.MapLocation, players[j].Item2, outPort);
+                    }
+                    else if (thisRace is MpRace)
+                    {
+                        MpRace race = (MpRace)thisRace;
+
+                        SendFile(race.Map.MapLocation, players[j].Item2, outPort);
+                    }
+                }
+            }
+        }
 
         //Receive
         static ResultsFile AskForSpResults() { return new ResultsFile(); }

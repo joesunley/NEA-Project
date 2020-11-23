@@ -759,6 +759,7 @@ public class Player
             if (CheckEmail(value)) { this.email = value; } //CheckEmail doesn'tdo anything atm - will check for: ??? @ ??? . ???
         }
     }
+
     /// <summary>
     /// Checks that the email provided is a valid email address
     /// </summary>
@@ -853,11 +854,11 @@ public class Player
 public class Map
 {
 
-    string hostFileLocation = ""; // Required
+    protected string hostFileLocation = ""; // Required
 
-    string mapName = "";        // Optional
-    string mapMapper = "";      // Optional
-    string mapDescription = ""; // Optional
+    protected string mapName = "";        // Optional
+    protected string mapMapper = "";      // Optional
+    protected string mapDescription = ""; // Optional
 
     /// <summary>
     /// Blank constructor function for a Map
