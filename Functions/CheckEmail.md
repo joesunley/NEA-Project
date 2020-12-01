@@ -1,4 +1,4 @@
-# Check Username
+# Check Email
 
 ### Overview
 This code takes an inputted  string and checks whether it conforms to [email address standards](http://rumkin.com/software/email/rules.php).
