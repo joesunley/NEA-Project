@@ -39,4 +39,13 @@ public string GetHTML(string URL)
 
 #### Tests
 
+| Test No. | Test Type | Input Data           | Expected Output | Output | Pass |
+|----------|-----------|----------------------|-----------------|--------|------|
+| 1        | Normal    | joesunley            | True            |        |      |
+| 2        | Edge      | (°ç°)                | True            |        |      |
+| 3        | Normal    | Gusten Grodslukare   | True            |        |      |
+| 4        | Null      | *Nothing*            | False           |        |      |
+| 5        | Erroneous | abcdefghijkmnop      | False           |        |      |
+| 6        | Erroneous | @dk.3k.753dfghk-sef  | False           |        |      |
+
 #### Screenshots
