@@ -7,7 +7,7 @@ This project takes the `Do Comp` functions from [FirstCombinedAttempt.cs](https:
 
 ### Code
 
-[Code File](https://github.com/joesunley/NEA-Project/blob/master/Resources/Code%20Files/Projects/FirstCombinedAttempt.cs)
+[Code File](https://github.com/joesunley/NEA-Project/blob/master/Resources/Code%20Files/Projects/Do%20Comp.cs)
 
 ```csharp
 using System;
