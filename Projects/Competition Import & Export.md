@@ -12,6 +12,12 @@ Round,ID,numGroups,numRaces,{Races(Id)}
 Race,Id,Type,name,weather,nightMode,mapLoc,ip,sI,compId
 ```
 
+```
+Competition,name,numRounds
+Round,ID,numQualPlayers,numRaces,{Races(Id)}
+Race,Id,Type,name,weather,nightMode,mapLoc,ip,sI,compId
+```
+
 And some sample data that will be used for testing is:
 ```
 Competition,MyComp,3
